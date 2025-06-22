@@ -93,7 +93,7 @@ class General extends Settings {
 				'type'    => 'switch',
 				'name'    => 'Отключение комментариев',
 				'default' => 'off',
-				'desc'    => '<strong>Вниманние! </strong>Полностью отключает камментарии на сайте, в том числе и отзывы Woocommerce, если они активны',
+				'desc'    => '<strong>Внимание!</strong> Полностью отключает камментарии на сайте, в том числе и отзывы Woocommerce, если они активны',
 			]
 		);
 

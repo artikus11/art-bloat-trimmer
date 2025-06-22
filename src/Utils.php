@@ -110,11 +110,11 @@ class Utils {
 
 		$cases = [ 2, 0, 1, 1, 1, 2 ];
 
-		$intnum = abs( (int) wp_strip_all_tags( $number ) );
+		$int_num = abs( (int) wp_strip_all_tags( $number ) );
 
-		$title_index = ( $intnum % 100 > 4 && $intnum % 100 < 20 )
+		$title_index = ( $int_num % 100 > 4 && $int_num % 100 < 20 )
 			? 2
-			: $cases[ min( $intnum % 10, 5 ) ];
+			: $cases[ min( $int_num % 10, 5 ) ];
 
 		return $titles[ $title_index ];
 	}
