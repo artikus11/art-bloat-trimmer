@@ -52,6 +52,7 @@
         <exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
         <exclude name="Generic.PHP.DisallowShortOpenTag.EchoFound"/>
         <exclude name="Generic.Commenting.DocComment.MissingShort"/>
+        <exclude name="Universal.Operators.DisallowShortTernary.Found"/>
 
         <!-- Disable dot of end string docblock -->
         <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar"/>

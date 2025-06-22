@@ -45,10 +45,10 @@ class Disabled {
 
 		add_filter( 'woocommerce_admin_get_feature_config', [ $this, 'feature_config_disabled_all' ], 1000, 1 );
 
-		//Отключение верхней панели в админке на товарах
+		// Отключение верхней панели в админке на товарах
 		add_filter( 'woocommerce_navigation_is_connected_page', '__return_false' );
 
-		//Отключение верхней панели в админке на странице статуса
+		// Отключение верхней панели в админке на странице статуса
 		add_filter( 'woocommerce_navigation_pages_with_tabs', function ( $tabs ) {
 
 			unset( $tabs['wc-status'] );
@@ -91,10 +91,10 @@ class Disabled {
 			// Инструмент улучшения процесса первоначальной настройки магазина (onboarding). default:true
 			'core-profiler'                           => $this->has_onboarding(),
 
-			//Эта функция предоставляет инструменты для быстрой настройки внешнего вида и функциональности вашего магазина, особенно в процессе первоначальной настройки (onboarding). Похоже что работает только с темами FSE. default:true
+			// Эта функция предоставляет инструменты для быстрой настройки внешнего вида и функциональности вашего магазина, особенно в процессе первоначальной настройки (onboarding). Похоже что работает только с темами FSE. default:true
 			'customize-store'                         => $this->has_onboarding(),
 
-			//Это инструмент, который помогает WooCommerce собирать отзывы от пользователей, пользователям будут показываться запросы на оценку усилий после выполнения определённых задач (onboarding). default:true
+			// Это инструмент, который помогает WooCommerce собирать отзывы от пользователей, пользователям будут показываться запросы на оценку усилий после выполнения определённых задач (onboarding). default:true
 			'customer-effort-score-tracks'            => $this->has_onboarding(),
 
 			// Импорт товаров при первоначальной настройке магазина (onboarding). default:true
@@ -109,7 +109,7 @@ class Disabled {
 			// Интерактивный гид, который помогает новым пользователям разобраться в настройках доставки в WooCommerce (onboarding). default:true
 			'shipping-setting-tour'                   => $this->has_onboarding(),
 
-			//Главная страница WooCommerce Admin. Раздел обзор. default:true
+			// Главная страница WooCommerce Admin. Раздел обзор. default:true
 			'homescreen'                              => $this->has_homescreen(),
 
 			// Раздел маркетинга. default:true

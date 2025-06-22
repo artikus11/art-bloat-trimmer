@@ -196,10 +196,9 @@ class UtilsTest extends ArtBloatTrimmerTestCase {
 
 	public function test_is_woocommerce_active_when_class_exists() {
 
-		// Мокаем class_exists
-		FunctionMocker::replace( 'class_exists', function ( $class ) {
+		FunctionMocker::replace( 'class_exists', function ( $class_name ) {
 
-			return $class === 'WC'; // Класс WC существует
+			return 'WC' === $class_name;
 		} );
 
 		$this->assertTrue( Utils::is_woocommerce_active() );
@@ -208,35 +207,30 @@ class UtilsTest extends ArtBloatTrimmerTestCase {
 
 	public function test_is_woocommerce_active_when_plugin_is_active() {
 
-		// Мокаем class_exists
-		FunctionMocker::replace( 'class_exists', function ( $class ) {
+		FunctionMocker::replace( 'class_exists', function () {
 
-			return false; // Класс WC не существует
+			return false;
 		} );
 
-		// Мокаем is_plugin_active
 		WP_Mock::userFunction( 'is_plugin_active', [
 			'args'   => [ 'woocommerce/woocommerce.php' ],
-			'return' => true, // Плагин активен
+			'return' => true,
 		] );
 
-		// Выполняем проверку
 		$this->assertTrue( Utils::is_woocommerce_active() );
 	}
 
 
 	public function test_is_woocommerce_active_when_neither_class_nor_plugin_is_active() {
 
-		// Мокаем class_exists
-		FunctionMocker::replace( 'class_exists', function ( $class ) {
+		FunctionMocker::replace( 'class_exists', function () {
 
-			return false; // Класс WC не существует
+			return false;
 		} );
 
-		// Мокаем is_plugin_active
 		WP_Mock::userFunction( 'is_plugin_active', [
 			'args'   => [ 'woocommerce/woocommerce.php' ],
-			'return' => false, // Плагин не активен
+			'return' => false,
 		] );
 
 		$this->assertFalse( Utils::is_woocommerce_active() );
@@ -245,10 +239,9 @@ class UtilsTest extends ArtBloatTrimmerTestCase {
 
 	public function test_is_rank_math_active_when_class_exists() {
 
-		// Мокаем class_exists
-		FunctionMocker::replace( 'class_exists', function ( $class ) {
+		FunctionMocker::replace( 'class_exists', function ( $class_name ) {
 
-			return $class === 'RankMath'; // Класс RankMath существует
+			return 'RankMath' === $class_name;
 		} );
 
 		$this->assertTrue( Utils::is_rank_math_active() );
@@ -257,35 +250,30 @@ class UtilsTest extends ArtBloatTrimmerTestCase {
 
 	public function test_is_rank_math_active_when_plugin_is_active() {
 
-		// Мокаем class_exists
-		FunctionMocker::replace( 'class_exists', function ( $class ) {
+		FunctionMocker::replace( 'class_exists', function () {
 
-			return false; // Класс RankMath не существует
+			return false;
 		} );
 
-		// Мокаем is_plugin_active
 		WP_Mock::userFunction( 'is_plugin_active', [
 			'args'   => [ 'seo-by-rank-math/rank-math.php' ],
-			'return' => true, // Плагин активен
+			'return' => true,
 		] );
 
-		// Выполняем проверку
 		$this->assertTrue( Utils::is_rank_math_active() );
 	}
 
 
 	public function test_is_rank_math_active_when_neither_class_nor_plugin_is_active() {
 
-		// Мокаем class_exists
-		FunctionMocker::replace( 'class_exists', function ( $class ) {
+		FunctionMocker::replace( 'class_exists', function () {
 
-			return false; // Класс WC не существует
+			return false;
 		} );
 
-		// Мокаем is_plugin_active
 		WP_Mock::userFunction( 'is_plugin_active', [
 			'args'   => [ 'seo-by-rank-math/rank-math.php' ],
-			'return' => false, // Плагин не активен
+			'return' => false,
 		] );
 
 		$this->assertFalse( Utils::is_rank_math_active() );

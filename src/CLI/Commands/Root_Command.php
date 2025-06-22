@@ -17,9 +17,17 @@ class Root_Command {
 
 
 	/**
-	 * @throws \WP_CLI\ExitException
+	 * Handles the main command invocation.
+	 *
+	 * @param array $args Positional command arguments.
+	 * @param array $assoc_args Associative command arguments (options).
+	 *
+	 * @return void
+	 * @throws \WP_CLI\ExitException When an unknown subcommand is provided.
+	 *
+	 * @when after_wp_load
 	 */
-	public function __invoke( $args, $assoc_args ): void {
+	public function __invoke( array $args, array $assoc_args ): void {
 
 		if ( empty( $args ) ) {
 			$this->list_commands();
@@ -41,13 +49,15 @@ class Root_Command {
 
 
 	/**
-	 * @param $args
-	 * @param $assoc_args
+	 * Processes subcommand execution.
+	 *
+	 * @param  array $args       Positional arguments (first element is subcommand name).
+	 * @param  array $assoc_args Associative command arguments (options).
 	 *
 	 * @return void
-	 * @throws \WP_CLI\ExitException
+	 * @throws \WP_CLI\ExitException When the subcommand doesn't exist.
 	 */
-	protected function subcommands( $args, $assoc_args ): void {
+	protected function subcommands( array $args, array $assoc_args ): void {
 
 		$subcommand = array_shift( $args );
 
@@ -97,7 +107,7 @@ class Root_Command {
 			WP_CLI::line( "\nНедоступные команды:" );
 			foreach ( $unavailable as $cmd ) {
 				WP_CLI::line( sprintf(
-					"  %-20s %s",
+					'  %-20s %s',
 					$cmd['command'],
 					$cmd['reason']
 				) );

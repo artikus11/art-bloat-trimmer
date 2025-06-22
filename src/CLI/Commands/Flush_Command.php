@@ -118,11 +118,11 @@ class Flush_Command implements Command_Interface {
 	 *     $ wp abt flush --type=actions --select
 	 *
 	 * @when after_wp_load
-	 * @throws \WP_CLI\ExitException
+	 * @throws \WP_CLI\ExitException When an unknown type is provided or flush operation fails.
 	 */
 	public function __invoke( array $args, array $assoc_args ): void {
 
-		$this->type = $assoc_args['type'] ?? 'all';
+		$this->type       = $assoc_args['type'] ?? 'all';
 		$this->is_dry_run = isset( $assoc_args['select'] ) && $assoc_args['select'];
 		$this->batch_size = isset( $assoc_args['batch'] ) ? (int) $assoc_args['batch'] : 0;
 
@@ -131,26 +131,26 @@ class Flush_Command implements Command_Interface {
 		}
 
 		WP_CLI::line(
-			sprintf( "Starting %s %s operation...",
+			sprintf( 'Starting %s %s operation...',
 				$this->is_dry_run ? 'count' : 'flush',
-				$this->type )
+			$this->type )
 		);
 
-		$result = $this->type === 'all'
-			? $this->process_all_types(   )
-			: $this->process_single_type( );
+		$result = 'all' === $this->type
+			? $this->process_all_types()
+			: $this->process_single_type();
 
 		WP_CLI::success( $result );
 	}
 
 
-	private function process_all_types( ): string {
+	protected function process_all_types(): string {
 
 		foreach ( self::METHOD_MAP as $type => $methods ) {
 			try {
 				$result = $this->is_dry_run
 					? $this->process_select( $methods['select'], $methods['label'] )
-					: $this->process_clear( $type, $methods['clear'], $methods['label'],$methods['batch_size'] ?? null );
+					: $this->process_clear( $type, $methods['clear'], $methods['label'], $methods['batch_size'] ?? null );
 				WP_CLI::line( $result );
 			} catch ( Exception $e ) {
 				WP_CLI::warning( "Ошибка при обработке типа '$type': {$e->getMessage()}" );
@@ -161,7 +161,7 @@ class Flush_Command implements Command_Interface {
 	}
 
 
-	private function process_single_type( ): string {
+	protected function process_single_type(): string {
 
 		$methods           = self::METHOD_MAP[ $this->type ];
 		$batch_size_config = $methods['batch_size'] ?? null;
@@ -180,21 +180,22 @@ class Flush_Command implements Command_Interface {
 	}
 
 
-	private function process_clear( string $type, string $method, string $label,  ?int $default_batch_size = null ): string {
+	protected function process_clear( string $type, string $method, string $label, ?int $default_batch_size = null ): string {
 
 		$message = sprintf( self::MESSAGE_TEMPLATES['clear'], $label );
 
 		WP_CLI::line( $message );
 
-		$actual_batch_size = $this->batch_size === 0 ? 0 : ( $this->batch_size ? : $default_batch_size );
+		$actual_batch_size = $this->determine_batch_size( $default_batch_size );
 
-		$total = Utilities::{self::METHOD_MAP[ $type ]['count']}();
+		$method_name = self::METHOD_MAP[ $type ]['count'];
+		$total       = Utilities::$method_name();
 
-		if ( $total === 0 ) {
+		if ( 0 === $total ) {
 			return 'Ничего не найдено.';
 		}
 
-		if ( $actual_batch_size === 0 || $total <= $actual_batch_size ) {
+		if ( 0 === $actual_batch_size || $total <= $actual_batch_size ) {
 			WP_CLI::line( "Обработка всех $total элементов..." );
 
 			return Utilities::$method( 0 );
@@ -204,7 +205,17 @@ class Flush_Command implements Command_Interface {
 	}
 
 
-	private function process_batched_clear( string $method, string $message, int $total, int $batch_size ): string {
+	protected function determine_batch_size( ?int $default_batch_size = null ): int {
+
+		if ( 0 === $this->batch_size ) {
+			return 0;
+		}
+
+		return $this->batch_size ? : $default_batch_size;
+	}
+
+
+	protected function process_batched_clear( string $method, string $message, int $total, int $batch_size ): string {
 
 		WP_CLI::line( "Обработка $total элементов пакетами по $batch_size..." );
 

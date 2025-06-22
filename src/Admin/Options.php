@@ -163,7 +163,7 @@ class Options {
 			'checked'     => true,
 			'readonly'    => true,
 			'disabled'    => true,
-			'data-*' => true
+			'data-*'      => true,
 		],
 	];
 
@@ -180,7 +180,7 @@ class Options {
 		$this->utils = $utils;
 
 		// Enqueue the admin scripts.
-		//add_action( 'admin_enqueue_scripts', [ $this, 'admin_scripts' ] );
+		// add_action( 'admin_enqueue_scripts', [ $this, 'admin_scripts' ] );
 
 		// Hook it up.
 		add_action( 'admin_init', [ $this, 'admin_init' ] );
@@ -482,8 +482,7 @@ class Options {
 				// Sanitize Callback.
 				$sanitize_callback = $field['sanitize_callback'] ?? '';
 
-
-				$custom_attributes         = array();
+				$custom_attributes = [];
 
 				if ( ! empty( $field['custom_attributes'] ) ) {
 					$field['custom_attributes'] = array_filter( (array) $field['custom_attributes'], 'strlen' );
@@ -512,7 +511,7 @@ class Options {
 					'attributes'        => [
 						'readonly' => $readonly,
 					],
-					'custom_attributes'        => $custom_attributes,
+					'custom_attributes' => $custom_attributes,
 					'class'             => $class,
 				];
 
@@ -1204,7 +1203,6 @@ class Options {
 			<?php endforeach; ?>
 		</div>
 		<?php
-
 	}
 
 

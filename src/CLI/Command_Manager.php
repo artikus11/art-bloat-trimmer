@@ -27,7 +27,7 @@ class Command_Manager {
 		try {
 			WP_CLI::add_command( 'abt', Root_Command::class );
 		} catch ( Exception $e ) {
-			error_log( 'CLI registration error: ' . $e->getMessage() );
+			WP_CLI::warning( 'CLI command registration failed: ' . $e->getMessage() );
 		}
 	}
 
@@ -45,7 +45,7 @@ class Command_Manager {
 				continue;
 			}
 
-			if ( ! in_array( Command_Interface::class, class_implements( $class_name ) ) ) {
+			if ( ! in_array( Command_Interface::class, class_implements( $class_name ), true ) ) {
 				continue;
 			}
 
@@ -84,10 +84,10 @@ class Command_Manager {
 	}
 
 
-	protected function get_unavailable_reason( string $className ): string {
+	protected function get_unavailable_reason( string $class_name ): string {
 
-		if ( method_exists( $className, 'get_dependencies' ) ) {
-			$deps         = $className::get_dependencies();
+		if ( method_exists( $class_name, 'get_dependencies' ) ) {
+			$deps         = $class_name::get_dependencies();
 			$deps_plugins = wp_list_pluck( $deps['plugins'], 'name' );
 
 			if ( isset( $deps['plugins'] ) ) {

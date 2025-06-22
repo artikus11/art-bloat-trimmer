@@ -10,17 +10,24 @@ class Utilities {
 
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		$query = "DELETE p FROM {$wpdb->prefix}comments p
-                 JOIN {$wpdb->prefix}posts pm on p.comment_post_ID = pm.ID
-                 WHERE comment_type = 'order_note' 
-                 AND post_status IN ('wc-completed', 'wc-cancelled')";
+		          JOIN {$wpdb->prefix}posts pm ON p.comment_post_ID = pm.ID
+		          WHERE comment_type = %s
+		          AND post_status IN (%s, %s)";
+
+		$args = [
+			'order_note',
+			'wc-completed',
+			'wc-cancelled',
+		];
 
 		if ( $limit > 0 ) {
-			$query .= " LIMIT {$limit}";
+			$query  .= ' LIMIT %d';
+			$args[] = $limit;
 		}
 
-		$result = absint( $wpdb->query( $query ) );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+		$result = absint( $wpdb->query( $wpdb->prepare( $query, $args ) ) );
 
 		wp_cache_flush();
 
@@ -37,13 +44,21 @@ class Utilities {
 		global $wpdb;
 
 		$query = "DELETE FROM {$wpdb->prefix}actionscheduler_actions
-                 WHERE `status` IN ('canceled', 'failed', 'complete')";
+                  WHERE `status` IN (%s, %s, %s)";
+
+		$args = [
+			'canceled',
+			'failed',
+			'complete',
+		];
 
 		if ( $limit > 0 ) {
-			$query .= " LIMIT {$limit}";
+			$query  .= ' LIMIT %d';
+			$args[] = $limit;
 		}
 
-		$result = absint( $wpdb->query( $query ) );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+		$result = absint( $wpdb->query( $wpdb->prepare( $query, $args ) ) );
 
 		wp_cache_flush();
 
@@ -61,13 +76,17 @@ class Utilities {
 
 		if ( $limit > 0 ) {
 
-			$result = $wpdb->query(
-				"DELETE FROM `{$wpdb->prefix}actionscheduler_logs` 
-                 WHERE action_id IN (
-                     SELECT action_id FROM `{$wpdb->prefix}actionscheduler_logs` 
-                     LIMIT {$limit}
-                 )"
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$query = $wpdb->query(
+				$wpdb->prepare(
+					"DELETE FROM `{$wpdb->prefix}actionscheduler_logs` 
+				                ORDER BY action_id ASC
+				                LIMIT %d",
+					$limit
+				)
 			);
+
+			$result = absint( $query );
 
 			wp_cache_flush();
 
@@ -91,6 +110,7 @@ class Utilities {
 
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$count = $wpdb->get_var(
 			"SELECT COUNT(*)
              FROM {$wpdb->prefix}comments p
@@ -107,6 +127,7 @@ class Utilities {
 
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$count = $wpdb->get_var(
 			"SELECT COUNT(*)
              FROM {$wpdb->prefix}actionscheduler_actions
@@ -121,6 +142,7 @@ class Utilities {
 
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$count = $wpdb->get_var(
 			"SELECT COUNT(*)
              FROM `{$wpdb->prefix}actionscheduler_logs`"
@@ -178,7 +200,7 @@ class Utilities {
 			return $label;
 		}
 
-		if ( $count === null ) {
+		if ( null === $count ) {
 			return $labels[ $label ][1];
 		}
 
