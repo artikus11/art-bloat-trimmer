@@ -14,7 +14,7 @@ class Scheduler {
 	}
 
 
-	public function retention_period(): float|int {
+	public function retention_period(): int {
 
 		return DAY_IN_SECONDS;
 	}

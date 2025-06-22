@@ -14,7 +14,7 @@
  * WC tested up to: 6.1
  *
  * RequiresWP: 5.5
- * RequiresPHP: 8.0
+ * RequiresPHP: 7.4
  *
  * Copyright Artem Abramovich
  */
