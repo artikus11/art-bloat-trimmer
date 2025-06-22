@@ -174,6 +174,13 @@ class Loader_Manager {
 					return is_admin() && $this->utils->is_woocommerce_active();
 				},
 			],
+			'dequeue_woocommerce'        => [
+				'class'     => Cleanup_Plugins\Woocommerce\Dequeue::class,
+				'condition' => function () {
+
+					return $this->utils->is_woocommerce_active() && 'on' === $this->options->get( 'woocommerce_dequeue', 'plugins' );
+				},
+			],
 			'disabled_rank_math'         => [
 				'class'     => Cleanup_Plugins\RankMath\Disabled::class,
 				'condition' => function () {

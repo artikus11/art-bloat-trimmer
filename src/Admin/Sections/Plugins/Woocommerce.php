@@ -38,6 +38,17 @@ class Woocommerce extends Plugins {
 		$this->wposa->add_field(
 			$this->section_id,
 			[
+				'id'      => 'woocommerce_dequeue',
+				'type'    => 'switch',
+				'name'    => 'Переключение стилей и скриптов',
+				'default' => 'off',
+				'desc'    => 'Подключает стили и скрипты только там где они требуются. <br><strong>Внимание!</strong> Данный функционал может ломать отображение или работу элементов и страниц. Все зависит от используемой темы и активных плагинов. Если такое проиходит отключите эту настройку',
+			]
+		);
+
+		$this->wposa->add_field(
+			$this->section_id,
+			[
 				'id'                => 'woocommerce_disable_analytics',
 				'type'              => 'switch',
 				'name'              => 'Отключить Аналитику',
