@@ -3,11 +3,11 @@
  * Class Disable_Feed
  *
  * @since   2.0.0
- * @package art-cleaner
+ * @package art-bloat-trimmer
  * @source https://wordpress.org/plugins/disable-feeds/
  */
 
-namespace Art\Cleaner\Cleanup_Core;
+namespace Art\BloatTrimmer\Cleanup_Core;
 
 class Disable_Feed {
 
@@ -19,14 +19,14 @@ class Disable_Feed {
 	}
 
 
-	public function remove_links() {
+	public function remove_links(): void {
 
 		remove_action( 'wp_head', 'feed_links', 2 );
 		remove_action( 'wp_head', 'feed_links_extra', 3 );
 	}
 
 
-	public function filter_feeds() {
+	public function filter_feeds(): void {
 
 		if ( ! is_feed() || is_404() ) {
 			return;
@@ -36,7 +36,7 @@ class Disable_Feed {
 	}
 
 
-	protected function redirect_feed() {
+	protected function redirect_feed(): void {
 
 		global $wp_rewrite, $wp_query;
 

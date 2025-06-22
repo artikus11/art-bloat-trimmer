@@ -12,6 +12,7 @@ project.properties
 .sublimelinterrc
 .phpcs.xml.dist
 .phpcs.cache
+.phpunit.result.cache
 
 # Grunt
 /node_modules/

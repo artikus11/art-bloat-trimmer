@@ -3,10 +3,10 @@
  * Class Cleanup_Bar
  *
  * @since   2.0.0
- * @package art-cleaner
+ * @package art-bloat-trimmer
  */
 
-namespace Art\Cleaner\Cleanup_Core;
+namespace Art\BloatTrimmer\Cleanup_Core;
 
 class Cleanup_Bar {
 
@@ -26,7 +26,7 @@ class Cleanup_Bar {
 		$nodes = $wp_admin_bar->get_nodes();
 
 		$allowed_nodes = apply_filters(
-			'acl_allowed_nodes_admin_bar',
+			'abt_allowed_nodes_admin_bar',
 			[
 				'user-actions',
 				'user-info',

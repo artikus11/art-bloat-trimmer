@@ -14,14 +14,24 @@
   ],
   "autoload": {
     "psr-4": {
-      "Art\\Cleaner\\": "src/"
+      "Art\\BloatTrimmer\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Art\\BloatTrimmer\\": "src/",
+      "Art\\BloatTrimmer\\Tests\\": "tests/"
     }
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.7",
     "wp-coding-standards/wpcs": "^3.0",
     "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
-    "phpcompatibility/phpcompatibility-wp": "*"
+    "phpcompatibility/phpcompatibility-wp": "*",
+    "phpunit/phpunit": "^9.6",
+    "10up/wp_mock": "^1.1",
+    "lucatume/function-mocker": "^2.0",
+    "mockery/mockery": "^1.6"
   },
   "config": {
     "allow-plugins": {

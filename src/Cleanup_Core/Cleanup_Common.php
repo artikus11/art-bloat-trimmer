@@ -1,8 +1,8 @@
 <?php
 
-namespace Art\Cleaner\Cleanup_Core;
+namespace Art\BloatTrimmer\Cleanup_Core;
 
-use Art\Cleaner\Admin\Options;
+use Art\BloatTrimmer\Admin\Options;
 
 class Cleanup_Common {
 

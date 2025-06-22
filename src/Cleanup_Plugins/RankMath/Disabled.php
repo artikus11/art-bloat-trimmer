@@ -4,7 +4,7 @@
  * Class Disabled
  *
  * @since     2.0.0
- * @package   art-cleaner
+ * @package   art-bloat-trimmer
  *
  * @link      https://rankmath.com/kb/filters-hooks-api-developer/
  *
@@ -12,9 +12,9 @@
  * @see       https://github.com/herewithme/wp-filters-extras
  */
 
-namespace Art\Cleaner\Cleanup_Plugins\RankMath;
+namespace Art\BloatTrimmer\Cleanup_Plugins\RankMath;
 
-use Art\Cleaner\Admin\Options;
+use Art\BloatTrimmer\Admin\Options;
 
 class Disabled {
 

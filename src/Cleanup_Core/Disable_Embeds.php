@@ -3,13 +3,13 @@
  * Class Disable_Embeds
  *
  * @since   2.0.0
- * @package art-cleaner
+ * @package art-bloat-trimmer
  * @source https://wordpress.org/plugins/disable-embeds/
  */
 
-namespace Art\Cleaner\Cleanup_Core;
+namespace Art\BloatTrimmer\Cleanup_Core;
 
-use Art\Cleaner\Utils;
+use Art\BloatTrimmer\Utils;
 use WP_Scripts;
 
 class Disable_Embeds {

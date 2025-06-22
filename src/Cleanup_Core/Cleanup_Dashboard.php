@@ -3,10 +3,10 @@
  * Class Cleanup_Dashboard
  *
  * @since   2.0.0
- * @package art-cleaner
+ * @package art-bloat-trimmer
  */
 
-namespace Art\Cleaner\Cleanup_Core;
+namespace Art\BloatTrimmer\Cleanup_Core;
 
 class Cleanup_Dashboard {
 
@@ -19,7 +19,7 @@ class Cleanup_Dashboard {
 	}
 
 
-	public function init() {
+	public function init(): void {
 
 		remove_action( 'welcome_panel', 'wp_welcome_panel' );
 		remove_action( 'admin_print_scripts-index.php', 'wp_localize_community_events' );
@@ -33,7 +33,7 @@ class Cleanup_Dashboard {
 	}
 
 
-	public function dashboard() {
+	public function dashboard(): void {
 
 		global $wp_meta_boxes;
 
@@ -41,7 +41,7 @@ class Cleanup_Dashboard {
 	}
 
 
-	public function dashboard_network() {
+	public function dashboard_network(): void {
 
 		global $wp_meta_boxes;
 
@@ -49,7 +49,7 @@ class Cleanup_Dashboard {
 	}
 
 
-	public function remove_wp_help_tab() {
+	public function remove_wp_help_tab(): void {
 
 		$screen = get_current_screen();
 		$screen->remove_help_tabs();

@@ -1,6 +1,6 @@
 <?php
 
-namespace Art\Cleaner\Cleanup_Plugins\Woocommerce;
+namespace Art\BloatTrimmer\Cleanup_Plugins\Woocommerce;
 
 if ( ! class_exists( 'Woocommerce' ) ) {
 	return;

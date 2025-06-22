@@ -3,11 +3,11 @@
  * Class Disable_Feed
  *
  * @since   2.0.0
- * @package art-cleaner
+ * @package art-bloat-trimmer
  * @source https://wordpress.org/plugins/disable-feeds/
  */
 
-namespace Art\Cleaner\Cleanup_Core;
+namespace Art\BloatTrimmer\Cleanup_Core;
 
 class Disable_Xml_Rpc {
 

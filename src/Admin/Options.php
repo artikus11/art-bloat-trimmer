@@ -9,9 +9,9 @@
  * @source https://github.com/mihdan/wp-oop-settings-api
  */
 
-namespace Art\Cleaner\Admin;
+namespace Art\BloatTrimmer\Admin;
 
-use Art\Cleaner\Utils;
+use Art\BloatTrimmer\Utils;
 
 /**
  * WP_OSA.
@@ -163,6 +163,7 @@ class Options {
 			'checked'     => true,
 			'readonly'    => true,
 			'disabled'    => true,
+			'data-*' => true
 		],
 	];
 
@@ -179,7 +180,7 @@ class Options {
 		$this->utils = $utils;
 
 		// Enqueue the admin scripts.
-		add_action( 'admin_enqueue_scripts', [ $this, 'admin_scripts' ] );
+		//add_action( 'admin_enqueue_scripts', [ $this, 'admin_scripts' ] );
 
 		// Hook it up.
 		add_action( 'admin_init', [ $this, 'admin_init' ] );
@@ -481,6 +482,16 @@ class Options {
 				// Sanitize Callback.
 				$sanitize_callback = $field['sanitize_callback'] ?? '';
 
+
+				$custom_attributes         = array();
+
+				if ( ! empty( $field['custom_attributes'] ) ) {
+					$field['custom_attributes'] = array_filter( (array) $field['custom_attributes'], 'strlen' );
+					foreach ( $field['custom_attributes'] as $attribute => $attribute_value ) {
+						$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+					}
+				}
+
 				$help_tab = $field['help_tab'] ?? '';
 				$class    = ! empty( $field['class'] )
 					? "wposa-form-table__row wposa-form-table__row_type_{$type} wposa-form-table__row_{$section}_{$id} {$field['class']}" :
@@ -501,6 +512,7 @@ class Options {
 					'attributes'        => [
 						'readonly' => $readonly,
 					],
+					'custom_attributes'        => $custom_attributes,
 					'class'             => $class,
 				];
 
@@ -733,9 +745,12 @@ class Options {
 
 		$html .= sprintf( '<label for="wposa-%1$s[%2$s]">', $args['section'], $args['id'] );
 		$html .= sprintf( '<input type="hidden" name="%1$s[%2$s]" value="off" />', $args['section'], $args['id'] );
-		$html .= sprintf( '<input type="checkbox" class="wposa-field wposa-field--switch" id="wposa-%1$s[%2$s]" name="%1$s[%2$s]" value="on" %3$s />', $args['section'],
+		$html .= sprintf(
+			'<input type="checkbox" class="wposa-field wposa-field--switch" id="wposa-%1$s[%2$s]" name="%1$s[%2$s]" value="on" %3$s %4$s />',
+			$args['section'],
 			$args['id'],
-			checked( $value, 'on', false )
+			checked( $value, 'on', false ),
+			implode( ' ', $args['custom_attributes'] )
 		);
 
 		$html .= sprintf( '%1$s</label>', $this->get_field_description( $args ) );
@@ -1074,7 +1089,7 @@ class Options {
 	 * @return void
 	 */
 	public function plugin_page() {
-
+		$this->script();
 		?>
 		<div class="wrap wposa">
 			<h1 class="wposa__title wposa__title--h1"><?php echo esc_html( $this->utils->get_plugin_title() ); ?>
@@ -1189,7 +1204,7 @@ class Options {
 			<?php endforeach; ?>
 		</div>
 		<?php
-		$this->script();
+
 	}
 
 
@@ -1305,134 +1320,117 @@ class Options {
 
 		?>
 		<script>
-			jQuery( document ).ready( function ( $ ) {
+			class SettingsManager {
+				constructor() {
+					this.groups = document.querySelectorAll('.group');
+					this.navTabs = document.querySelectorAll('.nav-tab-wrapper a');
+					this.disableFeatureAll = document.querySelector('input[data-disable-feature-all]');
+					this.disableFeatures = document.querySelectorAll('input[data-disable-feature]');
+					this.activeTab = this.getActiveTabFromStorage();
+				}
 
-				const $show_settings_toggler = $( '.show-settings' );
-				const $help                  = $( '.wpsa-help-tab-toggle' );
+				getActiveTabFromStorage() {
+					if (typeof localStorage !== 'undefined') {
+						return localStorage.getItem('activetab');
+					}
+					return null;
+				}
 
-				$help.on(
-					'click',
-					function () {
-						const $this = $( this );
-						const tab   = '#tab-link-<?php echo esc_js( $this->utils->get_plugin_prefix() ); ?>_' + $this.data( 'tab' );
+				initTabs() {
+					// Скрыть все вкладки
+					this.groups.forEach(group => group.style.display = 'none');
 
-						if ( $show_settings_toggler.attr( 'aria-expanded' ) === 'false' ) {
-							$show_settings_toggler.trigger( 'click' );
+					// Показать активную вкладку
+					if (this.activeTab && document.querySelector(this.activeTab)) {
+						document.querySelector(this.activeTab).style.display = 'block';
+					} else if (this.groups.length > 0) {
+						this.groups[0].style.display = 'block';
+					}
+				}
+
+				initNavTabs() {
+					// Установить класс активной вкладки
+					this.navTabs.forEach(tab => {
+						const tabIdWithSuffix = (this.activeTab ? this.activeTab + '-tab' : '');
+						if (tabIdWithSuffix === '#' + tab.id) {
+							tab.classList.add('nav-tab-active');
+						} else {
+							tab.classList.remove('nav-tab-active');
 						}
+					});
 
-						$( tab ).find( 'a' ).trigger( 'click' );
+					if (!this.activeTab && this.navTabs.length > 0) {
+						this.navTabs[0].classList.add('nav-tab-active');
 					}
-				);
 
-				//Initiate Color Picker.
-				$( '.color-picker' ).iris();
-
-				// Switches option sections
-				$( '.group' ).hide();
-				var activetab = '';
-				if ( 'undefined' != typeof localStorage ) {
-					activetab = localStorage.getItem( 'activetab' );
+					// Обработчики кликов по вкладкам
+					this.navTabs.forEach(tab => {
+						tab.addEventListener('click', (e) => this.handleTabClick(e, tab));
+					});
 				}
-				if ( '' !== activetab && $( activetab ).length ) {
-					$( activetab ).fadeIn();
-				} else {
-					$( '.group:first' ).fadeIn();
-				}
-				$( '.group .collapsed' ).each( function () {
-					$( this )
-						.find( 'input:checked' )
-						.parent()
-						.parent()
-						.parent()
-						.nextAll()
-						.each( function () {
-							if ( $( this ).hasClass( 'last' ) ) {
-								$( this ).removeClass( 'hidden' );
-								return false;
-							}
-							$( this )
-								.filter( '.hidden' )
-								.removeClass( 'hidden' );
-						} );
-				} );
 
-				if ( '' !== activetab && $( activetab + '-tab' ).length ) {
-					$( activetab + '-tab' ).addClass( 'nav-tab-active' );
-				} else {
-					$( '.nav-tab-wrapper a:first' ).addClass( 'nav-tab-active' );
-				}
-				$( '.nav-tab-wrapper a' ).click( function ( evt ) {
-
-					$( '.nav-tab-wrapper a' ).removeClass( 'nav-tab-active' );
-					$( this )
-						.addClass( 'nav-tab-active' )
-						.blur();
-					var clicked_group = $( this ).attr( 'href' );
-					if ( 'undefined' != typeof localStorage ) {
-						localStorage.setItem( 'activetab', $( this ).attr( 'href' ) );
-					}
-					$( '.group' ).hide();
-					$( clicked_group ).fadeIn();
-					evt.preventDefault();
-				} );
-				$( '.wpsa-browse' ).on( 'click', function ( event ) {
+				handleTabClick(event, tab) {
 					event.preventDefault();
 
-					var self = $( this );
+					// Убрать активный класс у всех
+					this.navTabs.forEach(t => t.classList.remove('nav-tab-active'));
+					tab.classList.add('nav-tab-active');
 
-					// Create the media frame.
-					var file_frame = (
-						wp.media.frames.file_frame = wp.media( {
-							title:    self.data( 'uploader_title' ),
-							button:   {
-								text: self.data( 'uploader_button_text' )
-							},
-							multiple: false
-						} )
-					);
+					const clickedGroup = tab.getAttribute('href');
+					if (typeof localStorage !== 'undefined') {
+						localStorage.setItem('activetab', clickedGroup);
+					}
 
-					file_frame.on( 'select', function () {
-						attachment = file_frame
-							.state()
-							.get( 'selection' )
-							.first()
-							.toJSON();
+					// Скрыть все и показать нужную группу
+					this.groups.forEach(group => group.style.display = 'none');
+					const targetGroup = document.querySelector(clickedGroup);
+					if (targetGroup) {
+						targetGroup.style.display = 'block';
+					}
+				}
 
-						self
-							.prev( '.wpsa-url' )
-							.val( attachment.url )
-							.change();
-					} );
+				initSelectAllCheckboxes() {
+					document.querySelectorAll('[data-select-all]').forEach(checkbox => {
+						checkbox.addEventListener('change', () => {
+							const name = checkbox.dataset.selectAll;
+							document.querySelectorAll(`[data-selectable="${name}"]`).forEach(el => {
+								el.checked = checkbox.checked;
+							});
+						});
+					});
+				}
 
-					// Finally, open the modal
-					file_frame.open();
-				} );
+				initFeatureToggles() {
+					if (this.disableFeatureAll) {
+						this.disableFeatureAll.addEventListener('change', () => {
+							if (this.disableFeatureAll.checked) {
+								this.disableFeatures.forEach(el => el.checked = false);
+							}
+						});
+					}
 
-				$( 'input.wpsa-url' )
-					.on( 'change keyup paste input', function () {
-						var self = $( this );
-						self
-							.next()
-							.parent()
-							.children( '.wpsa-image-preview' )
-							.children( 'img' )
-							.attr( 'src', self.val() );
-					} )
-					.change();
+					this.disableFeatures.forEach(el => {
+						el.addEventListener('change', () => {
+							if (el.checked && this.disableFeatureAll) {
+								this.disableFeatureAll.checked = false;
+							}
+						});
+					});
+				}
 
+				init() {
+					this.initTabs();
+					this.initNavTabs();
+					this.initSelectAllCheckboxes();
+					this.initFeatureToggles();
+				}
+			}
 
-				$( '[data-select-all]' ).click( function () {
-
-					var checkbox = $( this );
-
-					var checked = checkbox.prop( 'checked' );
-
-					var name = $( this ).data( 'select-all' );
-					$( '[data-selectable="' + name + '"]' ).each( function () {
-						$( this ).prop( 'checked', checked );
-					} )
-				} )
-			} );
+			// Инициализация после загрузки DOM
+			document.addEventListener('DOMContentLoaded', () => {
+				const manager = new SettingsManager();
+				manager.init();
+			});
 
 		</script>
 

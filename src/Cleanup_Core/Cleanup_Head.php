@@ -3,13 +3,13 @@
  * Class Cleanup_Head
  *
  * @since   2.0.0
- * @package art-cleaner
+ * @package art-bloat-trimmer
  * @source https://wp-kama.ru/hook/wp_head#udalenie-funktsij-wp-iz-wp_head
  */
 
-namespace Art\Cleaner\Cleanup_Core;
+namespace Art\BloatTrimmer\Cleanup_Core;
 
-use Art\Cleaner\Admin\Options;
+use Art\BloatTrimmer\Admin\Options;
 
 class Cleanup_Head {
 
@@ -36,7 +36,7 @@ class Cleanup_Head {
 	/**
 	 * Remove WP version
 	 */
-	public function cleanup_generator() {
+	public function cleanup_generator(): void {
 
 		remove_action( 'wp_head', 'wp_generator' );
 		add_filter( 'the_generator', '__return_empty_string' );
@@ -46,7 +46,7 @@ class Cleanup_Head {
 	/**
 	 * Remove Shortlink
 	 */
-	public function cleanup_shortlink() {
+	public function cleanup_shortlink(): void {
 
 		remove_action( 'wp_head', 'wp_shortlink_wp_head', 10, 0 );
 		remove_action( 'template_redirect', 'wp_shortlink_header', 11, 0 );
@@ -56,7 +56,7 @@ class Cleanup_Head {
 	/**
 	 * Remove REST API links
 	 */
-	public function cleanup_wp_json() {
+	public function cleanup_wp_json(): void {
 
 		remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 		remove_action( 'wp_head', 'wp_oembed_add_host_js' );

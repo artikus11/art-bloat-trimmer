@@ -1,8 +1,8 @@
 <?php
 
-namespace Art\Cleaner\Admin;
+namespace Art\BloatTrimmer\Admin;
 
-use Art\Cleaner\Utils;
+use Art\BloatTrimmer\Utils;
 
 class Settings {
 
@@ -35,14 +35,14 @@ class Settings {
 	}
 
 
-	public function init_hooks() {
+	public function init_hooks(): void {
 
 		add_action( 'init', [ $this, 'section' ], 110 );
 		add_action( 'widgets_init', [ $this, 'set_active_widgets' ], 99 );
 	}
 
 
-	public function section() {}
+	public function section(): void {}
 
 
 	/**
@@ -50,7 +50,7 @@ class Settings {
 	 *
 	 * @return void
 	 */
-	public function set_active_widgets() {
+	public function set_active_widgets(): void {
 
 		global $wp_widget_factory;
 		$this->set_widgets( $wp_widget_factory->widgets );

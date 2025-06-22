@@ -3,11 +3,11 @@
  * Class Disable_Aggressive_Updates
  *
  * @since   2.0.0
- * @package art-cleaner
+ * @package art-bloat-trimmer
  * @source https://wp-kama.ru/id_8514/uskoryaem-adminku-wordpress-otklyuchaem-proverki-obnovlenij.html
  */
 
-namespace Art\Cleaner\Cleanup_Core;
+namespace Art\BloatTrimmer\Cleanup_Core;
 
 class Disable_Aggressive_Updates {
 

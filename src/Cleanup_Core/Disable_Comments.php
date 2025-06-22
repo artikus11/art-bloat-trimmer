@@ -3,11 +3,11 @@
  * Class Disable_Feed
  *
  * @since   2.0.0
- * @package art-cleaner
+ * @package art-bloat-trimmer
  * @source https://wp-kama.ru/id_17098/disable-wp-comments.html
  */
 
-namespace Art\Cleaner\Cleanup_Core;
+namespace Art\BloatTrimmer\Cleanup_Core;
 
 use WP_Error;
 

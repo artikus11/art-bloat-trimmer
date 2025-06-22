@@ -1,8 +1,8 @@
 <?php
 
-namespace Art\Cleaner\Admin\Sections;
+namespace Art\BloatTrimmer\Admin\Sections;
 
-use Art\Cleaner\Admin\Settings;
+use Art\BloatTrimmer\Admin\Settings;
 
 class General extends Settings {
 

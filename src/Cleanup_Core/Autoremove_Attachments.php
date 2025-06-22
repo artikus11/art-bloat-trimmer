@@ -1,6 +1,6 @@
 <?php
 
-namespace Art\Cleaner\Cleanup_Core;
+namespace Art\BloatTrimmer\Cleanup_Core;
 
 class Autoremove_Attachments {
 
@@ -10,7 +10,7 @@ class Autoremove_Attachments {
 	}
 
 
-	public function remove_attachments( $post_id ) {
+	public function remove_attachments( $post_id ): void {
 
 		$post_id = (int) $post_id;
 

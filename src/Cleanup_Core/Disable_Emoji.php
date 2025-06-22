@@ -3,11 +3,11 @@
  * Class Disable_Emoji
  *
  * @since   2.0.0
- * @package art-cleaner
+ * @package art-bloat-trimmer
  * @source https://wordpress.org/plugins/disable-emojis/
  */
 
-namespace Art\Cleaner\Cleanup_Core;
+namespace Art\BloatTrimmer\Cleanup_Core;
 
 class Disable_Emoji {
 
@@ -17,7 +17,7 @@ class Disable_Emoji {
 	}
 
 
-	public function disable_emojis() {
+	public function disable_emojis(): void {
 
 		remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 		remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );

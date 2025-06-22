@@ -1,14 +1,14 @@
 <?php
 
-namespace Art\Cleaner\Admin\Sections\Plugins;
+namespace Art\BloatTrimmer\Admin\Sections\Plugins;
 
-use Art\Cleaner\Admin\Sections\Plugins;
+use Art\BloatTrimmer\Admin\Sections\Plugins;
 
 class RankMath extends Plugins {
 
 	protected function fields(): void {
 
-		if ( ! is_plugin_active( 'seo-by-rank-math/rank-math.php' ) ) {
+		if ( ! $this->utils->is_rank_math_active() ) {
 			return;
 		}
 

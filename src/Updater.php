@@ -1,6 +1,6 @@
 <?php
 
-namespace Art\Cleaner;
+namespace Art\BloatTrimmer;
 
 /**
  * Class Updater file
@@ -166,6 +166,10 @@ class Updater {
 
 
 	public function modify_transient( $transient ) {
+
+		if ( ! is_object( $transient ) ) {
+			return $transient;
+		}
 
 		if ( empty( property_exists( $transient, 'checked' ) ) ) {
 			return $transient;

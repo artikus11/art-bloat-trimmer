@@ -3,12 +3,12 @@
  * Class Cleanup_Widgets
  *
  * @since   2.0.0
- * @package art-cleaner
+ * @package art-bloat-trimmer
  */
 
-namespace Art\Cleaner\Cleanup_Core;
+namespace Art\BloatTrimmer\Cleanup_Core;
 
-use Art\Cleaner\Admin\Options;
+use Art\BloatTrimmer\Admin\Options;
 
 class Cleanup_Widgets {
 

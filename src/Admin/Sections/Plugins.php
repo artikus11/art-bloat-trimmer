@@ -1,8 +1,8 @@
 <?php
 
-namespace Art\Cleaner\Admin\Sections;
+namespace Art\BloatTrimmer\Admin\Sections;
 
-use Art\Cleaner\Admin\Settings;
+use Art\BloatTrimmer\Admin\Settings;
 
 class Plugins extends Settings {
 
@@ -45,7 +45,7 @@ class Plugins extends Settings {
 				'id'   => 'plugins_message',
 				'type' => 'title',
 				'name' => 'Нет активных плагинов',
-				'desc' => 'На текущий момент плагин поддержвается плагины: WooCommerce, SEO Rank Math. Настройки появяться автоматически приактивации поддерживаемых плагинов.',
+				'desc' => 'На текущий момент плагин поддержваются плагины: WooCommerce, SEO Rank Math. Настройки появяться автоматически приактивации поддерживаемых плагинов.',
 			]
 		);
 	}
