@@ -1,248 +1,268 @@
 <?php
+/**
+ * Class Dequeue
+ *
+ * @since   2.1.1
+ * @package art-bloat-trimmer/src/Cleanup_Plugins/Woocommerce
+ */
 
 namespace Art\BloatTrimmer\Cleanup_Plugins\Woocommerce;
 
-if ( ! class_exists( 'Woocommerce' ) ) {
-	return;
-}
-
+use WP_Post;
 
 class Dequeue {
 
-	public static function init_hooks(): void {
+	private ?WP_Post $current_post;
 
-		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'dequeue' ], 9999 );
+
+	private array $enqueues = [
+		'styles'  => [
+			'woocommerce-inline',
+			'photoswipe',
+			'photoswipe-default-skin',
+			'select2',
+			'woocommerce_prettyPhoto_css',
+			'woocommerce-layout',
+			'woocommerce-smallscreen',
+			'woocommerce-general',
+			'wc-blocks-vendors-style',
+			'wc-blocks-style',
+		],
+		'scripts' => [
+			'flexslider',
+			'js-cookie',
+			'jquery-blockui',
+			'jquery-cookie',
+			'jquery-payment',
+			'photoswipe',
+			'photoswipe-ui-default',
+			'prettyPhoto',
+			'prettyPhoto-init',
+			'select2',
+			'selectWoo',
+			'wc-address-i18n',
+			'wc-add-payment-method',
+			'wc-cart',
+			'wc-cart-fragments',
+			'wc-checkout',
+			'wc-country-select',
+			'wc-credit-card-form',
+			'wc-add-to-cart',
+			'wc-add-to-cart-variation',
+			'wc-geolocation',
+			'wc-lost-password',
+			'wc-password-strength-meter',
+			'wc-single-product',
+			'woocommerce',
+			'zoom',
+			'wc-blocks-middleware',
+			'wc-blocks',
+			'wc-blocks-registry',
+			'wc-vendors',
+			'wc-shared-context',
+			'wc-shared-hocs',
+			'wc-price-format',
+			'wc-active-filters-block-frontend',
+			'wc-stock-filter-block-frontend',
+			'wc-attribute-filter-block-frontend',
+			'wc-price-filter-block-frontend',
+			'wc-reviews-block-frontend',
+			'wc-all-products-block-frontend',
+		],
+	];
+
+
+	public function __construct() {
+
+		global $post;
+		$this->current_post = $post;
 	}
 
 
-	public static function dequeue(): void {
+	public function init_hooks(): void {
+
+		add_action( 'wp_enqueue_scripts', [ $this, 'cleanup_assets' ], PHP_INT_MAX );
+	}
+
+
+	public function cleanup_assets(): void {
 
 		if ( is_admin() ) {
 			return;
 		}
 
-		$enqueues = self::enqueues();
-
-		$enqueues = self::has_product( $enqueues );
-
-		$enqueues = self::has_archives_products( $enqueues );
-
-		$enqueues = self::has_cart_checkout( $enqueues );
-
-		$enqueues = self::has_account( $enqueues );
-
-		foreach ( $enqueues as $key => $enqueue ) {
-
-			if ( 'scripts' === $key ) {
-				foreach ( $enqueue as $item ) {
-					wp_dequeue_script( $item );
-				}
-			}
-
-			if ( 'styles' === $key ) {
-				foreach ( $enqueue as $item ) {
-					wp_dequeue_style( $item );
-				}
-			}
-		}
+		$this->prepare_assets_to_remove();
+		$this->remove_assets();
 	}
 
 
-	/**
-	 * @param  array $enqueues
-	 *
-	 * @return array
-	 */
-	protected static function has_product( array $enqueues ): array {
+	private function prepare_assets_to_remove(): void {
 
 		if ( is_product() ) {
-			unset(
-				$enqueues['scripts'][ array_search( 'jquery-blockui', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'wc-single-product', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'flexslider', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'photoswipe', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'zoom', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'prettyPhoto', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'prettyPhoto-init', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'photoswipe-ui-default', $enqueues['scripts'], true ) ],
-				$enqueues['styles'][ array_search( 'photoswipe', $enqueues['styles'], true ) ],
-				$enqueues['styles'][ array_search( 'photoswipe-default-skin', $enqueues['styles'], true ) ],
-				$enqueues['styles'][ array_search( 'woocommerce_prettyPhoto_css', $enqueues['styles'], true ) ]
-			);
+			$this->remove_product_assets();
 		}
 
-		return $enqueues;
-	}
-
-
-	/**
-	 * @param  array $enqueues
-	 *
-	 * @return array
-	 */
-	protected static function has_archives_products( array $enqueues ): array {
-
-		global $post;
-
-		$has_wc_blocks = self::is_wc_blocks( $post );
-
-		$has_wc_shortcode_products = self::is_wc_shortcode_products( $post );
-
-		if ( is_woocommerce() || is_product_category() || is_product_tag() || $has_wc_blocks || $has_wc_shortcode_products ) {
-			unset(
-				$enqueues['scripts'][ array_search( 'woocommerce', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'wc-add-to-cart', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'wc-cart-fragments', $enqueues['scripts'], true ) ],
-				$enqueues['styles'][ array_search( 'woocommerce-layout', $enqueues['styles'], true ) ],
-				$enqueues['styles'][ array_search( 'woocommerce-smallscreen', $enqueues['styles'], true ) ],
-				$enqueues['styles'][ array_search( 'woocommerce-general', $enqueues['styles'], true ) ]
-			);
+		if ( $this->should_remove_archive_assets() ) {
+			$this->remove_archive_assets();
 		}
-
-		return $enqueues;
-	}
-
-
-	/**
-	 * @param  array $enqueues
-	 *
-	 * @return array
-	 */
-	private static function has_cart_checkout( array $enqueues ): array {
 
 		if ( is_cart() || is_checkout() ) {
-			unset(
-				$enqueues['scripts'][ array_search( 'wc-add-to-cart', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'wc-checkout', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'wc-cart', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'wc-cart-fragments', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'wc-country-select', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'select2', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'selectWoo', $enqueues['scripts'], true ) ],
-				$enqueues['styles'][ array_search( 'select2', $enqueues['styles'], true ) ]
-			);
+			$this->remove_cart_checkout_assets();
 		}
-
-		return $enqueues;
-	}
-
-
-	/**
-	 * @param  array $enqueues
-	 *
-	 * @return array
-	 */
-	private static function has_account( array $enqueues ): array {
 
 		if ( is_account_page() ) {
-			unset(
-				$enqueues['scripts'][ array_search( 'wc-country-select', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'select2', $enqueues['scripts'], true ) ],
-				$enqueues['scripts'][ array_search( 'selectWoo', $enqueues['scripts'], true ) ],
-				$enqueues['styles'][ array_search( 'select2', $enqueues['styles'], true ) ]
-			);
+			$this->remove_account_assets();
 		}
 
-		return $enqueues;
+		$this->enqueues = array_map( 'array_filter', $this->enqueues );
 	}
 
 
-	protected static function enqueues(): array {
+	private function remove_assets(): void {
 
-		return [
-			'styles'  => [
-				'woocommerce-inline',
+		foreach ( $this->enqueues['scripts'] as $script ) {
+			wp_dequeue_script( $script );
+		}
+
+		foreach ( $this->enqueues['styles'] as $style ) {
+			wp_dequeue_style( $style );
+			wp_deregister_style( $style );
+		}
+	}
+
+
+	private function remove_product_assets(): void {
+
+		$this->remove_assets_from_list(
+			'scripts',
+			[
+				'jquery-blockui',
+				'wc-single-product',
+				'flexslider',
+				'photoswipe',
+				'photoswipe-ui-default',
+				'zoom',
+				'prettyPhoto',
+				'prettyPhoto-init',
+			]
+		);
+
+		$this->remove_assets_from_list(
+			'styles',
+			[
 				'photoswipe',
 				'photoswipe-default-skin',
-				'select2',
 				'woocommerce_prettyPhoto_css',
+			]
+		);
+	}
+
+
+	private function remove_archive_assets(): void {
+
+		$this->remove_assets_from_list(
+			'scripts',
+			[
+				'woocommerce',
+				'wc-add-to-cart',
+				'wc-cart-fragments',
+			]
+		);
+
+		$this->remove_assets_from_list(
+			'styles',
+			[
 				'woocommerce-layout',
 				'woocommerce-smallscreen',
 				'woocommerce-general',
-				'wc-blocks-vendors-style',
-				'wc-blocks-style',
-			],
-			'scripts' => [
-				'flexslider',
-				'js-cookie',
-				'jquery-blockui',
-				'jquery-cookie',
-				'jquery-payment',
-				'photoswipe',
-				'photoswipe-ui-default',
-				'prettyPhoto',
-				'prettyPhoto-init',
-				'select2',
-				'selectWoo',
-				'wc-address-i18n',
-				'wc-add-payment-method',
-				'wc-cart',
-				'wc-cart-fragments',
-				'wc-checkout',
-				'wc-country-select',
-				'wc-credit-card-form',
-				'wc-add-to-cart',
-				'wc-add-to-cart-variation',
-				'wc-geolocation',
-				'wc-lost-password',
-				'wc-password-strength-meter',
-				'wc-single-product',
-				'woocommerce',
-				'zoom',
-				'wc-blocks-middleware',
-				'wc-blocks',
-				'wc-blocks-registry',
-				'wc-vendors',
-				'wc-shared-context',
-				'wc-shared-hocs',
-				'wc-price-format',
-				'wc-active-filters-block-frontend',
-				'wc-stock-filter-block-frontend',
-				'wc-attribute-filter-block-frontend',
-				'wc-price-filter-block-frontend',
-				'wc-reviews-block-frontend',
-				'wc-all-products-block-frontend',
-			],
-		];
+			]
+		);
 	}
 
 
-	/**
-	 * @param  \WP_Post $post
-	 *
-	 * @return bool
-	 */
-	protected static function is_wc_blocks( $post ): bool {
+	private function remove_cart_checkout_assets(): void {
 
-		if ( empty( $post ) ) {
+		$this->remove_assets_from_list(
+			'scripts',
+			[
+				'wc-checkout',
+				'wc-cart',
+				'wc-cart-fragments',
+				'wc-country-select',
+				'select2',
+				'selectWoo',
+			]
+		);
+
+		$this->remove_assets_from_list(
+			'styles',
+			[
+				'select2',
+			]
+		);
+	}
+
+
+	private function remove_account_assets(): void {
+
+		$this->remove_assets_from_list(
+			'scripts',
+			[
+				'wc-country-select',
+				'select2',
+				'selectWoo',
+			]
+		);
+
+		$this->remove_assets_from_list(
+			'styles',
+			[
+				'select2',
+			]
+		);
+	}
+
+
+	private function remove_assets_from_list( $type, $assets ): void {
+
+		$this->enqueues[ $type ] = array_diff(
+			$this->enqueues[ $type ],
+			$assets
+		);
+	}
+
+
+	private function should_remove_archive_assets(): bool {
+
+		return is_woocommerce()
+				|| is_product_category()
+				|| is_product_tag()
+				|| $this->has_wc_blocks()
+				|| $this->has_wc_shortcode_products();
+	}
+
+
+	private function has_wc_blocks(): bool {
+
+		if ( empty( $this->current_post ) ) {
 			return false;
 		}
 
-		$parse_content  = parse_blocks( $post->post_content );
-		$blocks_name    = array_filter( wp_list_pluck( $parse_content, 'blockName' ) );
-		$wc_blocks_name = [];
+		$blocks      = parse_blocks( $this->current_post->post_content );
+		$block_names = array_filter( wp_list_pluck( $blocks, 'blockName' ) );
 
-		foreach ( $blocks_name as $block_name ) {
-			if ( str_contains( $block_name, 'woocommerce' ) ) {
-				$wc_blocks_name[] = $block_name;
+		foreach ( $block_names as $name ) {
+			if ( str_contains( $name, 'woocommerce' ) ) {
+				return true;
 			}
 		}
 
-		return ! empty( $wc_blocks_name );
+		return false;
 	}
 
 
-	/**
-	 * @param  \WP_Post $post
-	 *
-	 * @return bool
-	 */
-	protected static function is_wc_shortcode_products( $post ): bool {
+	private function has_wc_shortcode_products(): bool {
 
-		if ( empty( $post ) ) {
-			return false;
-		}
-
-		return has_shortcode( $post->post_content, 'products' );
+		return $this->current_post && has_shortcode( $this->current_post->post_content, 'products' );
 	}
 }
