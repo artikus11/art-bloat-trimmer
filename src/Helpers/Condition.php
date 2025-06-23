@@ -5,37 +5,33 @@ namespace Art\BloatTrimmer\Helpers;
 class Condition {
 
 	/**
-	 * Determines if the current page is a post edit or new post page in the WordPress admin.
+	 * Determines if current admin page is a post edit or new post screen.
 	 *
-	 * @param  string|null $mode Optional. Specify "edit" to check only edit pages,
-	 *                           "new" to check only new post pages, or null to check both.
+	 * @param  string|null $mode Optional. Specify 'edit' for edit pages only,
+	 *                           'new' for new post pages only, or null for both.
 	 *
-	 * @return bool True if the current page matches the specified mode, false otherwise.
+	 * @return bool True if current page matches the specified mode.
 	 */
 	public static function is_edit_page( string $mode = null ): bool {
+
+		global $pagenow;
 
 		if ( ! is_admin() ) {
 			return false;
 		}
 
-		$screen = get_current_screen();
-
-		if ( ! $screen ) {
-			return false;
-		}
-
-		$is_edit = 'post' === $screen->base && 'edit.php' === $screen->parent_file;
-		$is_new  = 'post' === $screen->base && 'add' === $screen->action;
+		$edit_pages = [ 'post.php' ];
+		$new_pages  = [ 'post-new.php' ];
 
 		if ( 'edit' === $mode ) {
-			return $is_edit;
+			return in_array( $pagenow, $edit_pages, true );
 		}
 
 		if ( 'new' === $mode ) {
-			return $is_new;
+			return in_array( $pagenow, $new_pages, true );
 		}
 
-		return $is_edit || $is_new;
+		return in_array( $pagenow, array_merge( $edit_pages, $new_pages ), true );
 	}
 
 

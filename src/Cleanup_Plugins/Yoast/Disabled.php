@@ -3,12 +3,13 @@
 namespace Art\BloatTrimmer\Cleanup_Plugins\Yoast;
 
 use Art\BloatTrimmer\Admin\Options;
+use Art\BloatTrimmer\Helpers\Condition;
 
 class Disabled {
 
 	public function init_hooks(): void {
 
-		if ( 'on' === Options::get( 'yoast_disable_ads', 'plugins', 'off' ) ) {
+		if ( 'on' === Options::get( 'yoast_disable_ads', 'plugins', 'off' ) && ! Condition::is_edit_page() ) {
 			define( 'WPSEO_PREMIUM_FILE', true );
 		}
 
