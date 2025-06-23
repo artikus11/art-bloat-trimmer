@@ -51,6 +51,7 @@ class Loader_Manager {
 			Head::class,
 			Plugins\Woocommerce::class,
 			Plugins\RankMath::class,
+			Plugins\Yoast::class,
 		];
 
 		foreach ( $core_modules as $module_class ) {
@@ -186,6 +187,13 @@ class Loader_Manager {
 				'condition' => function () {
 
 					return $this->utils->is_rank_math_active();
+				},
+			],
+			'disabled_yoast'             => [
+				'class'     => Cleanup_Plugins\Yoast\Disabled::class,
+				'condition' => function () {
+
+					return $this->utils->is_yoast_active();
 				},
 			],
 

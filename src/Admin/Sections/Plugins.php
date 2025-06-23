@@ -7,6 +7,7 @@ use Art\BloatTrimmer\Admin\Settings;
 class Plugins extends Settings {
 
 	protected string $section_id = 'plugins';
+	protected string $field_prefix;
 
 
 	private static bool $section_called = false;

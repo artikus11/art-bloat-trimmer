@@ -154,4 +154,22 @@ class Utils {
 
 		return false;
 	}
+
+
+	public static function is_yoast_active(): bool {
+
+		if ( class_exists( 'Yoast\WP\SEO\Main' ) ) {
+			return true;
+		}
+
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		if ( is_plugin_active( 'wordpress-seo/wp-seo.php' ) ) {
+			return true;
+		}
+
+		return false;
+	}
 }

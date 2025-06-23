@@ -29,6 +29,7 @@ class Settings {
 		$this->support_plugins = [
 			'woocommerce/woocommerce.php',
 			'seo-by-rank-math/rank-math.php',
+			'wordpress-seo/wp-seo.php',
 		];
 
 		$this->init_hooks();
