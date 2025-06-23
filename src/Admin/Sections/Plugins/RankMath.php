@@ -8,7 +8,7 @@ class RankMath extends Plugins {
 
 	protected function fields(): void {
 
-		if ( ! $this->utils->is_rank_math_active() ) {
+		if ( ! $this->condition->is_rank_math_active() ) {
 			return;
 		}
 

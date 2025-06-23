@@ -9,7 +9,7 @@
 
 namespace Art\BloatTrimmer\Cleanup_Core;
 
-use Art\BloatTrimmer\Utils;
+use Art\BloatTrimmer\Helpers\Utils;
 use WP_Scripts;
 
 class Disable_Embeds {

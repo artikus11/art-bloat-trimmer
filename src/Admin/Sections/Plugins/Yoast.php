@@ -11,7 +11,7 @@ class Yoast extends Plugins {
 
 	protected function fields(): void {
 
-		if ( ! $this->utils->is_yoast_active() ) {
+		if ( ! $this->condition->is_yoast_active() ) {
 			return;
 		}
 

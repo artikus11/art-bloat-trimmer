@@ -4,6 +4,8 @@ namespace Art\BloatTrimmer;
 
 use Art\BloatTrimmer\Admin\Options;
 use Art\BloatTrimmer\CLI\Command_Manager;
+use Art\BloatTrimmer\Helpers\Condition;
+use Art\BloatTrimmer\Helpers\Utils;
 
 class Main {
 
@@ -19,11 +21,15 @@ class Main {
 	protected Command_Manager $cli_manager;
 
 
+	protected Condition $condition;
+
+
 	public function __construct() {
 
 		$this->utils         = new Utils();
-		$this->options       = new Options( $this->utils );
-		$this->module_loader = new Loader_Manager( $this->options, $this->utils );
+		$this->condition     = new Condition();
+		$this->options       = new Options( $this->utils, $this->condition );
+		$this->module_loader = new Loader_Manager( $this->options, $this->utils, $this->condition );
 		$this->cli_manager   = new Command_Manager();
 	}
 
@@ -32,6 +38,7 @@ class Main {
 
 		add_action( 'plugins_loaded', [ $this, 'initialize' ], - PHP_INT_MAX );
 	}
+
 
 	public function initialize(): void {
 

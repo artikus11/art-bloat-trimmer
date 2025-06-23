@@ -3,7 +3,7 @@
  * Class Utils
  */
 
-namespace Art\BloatTrimmer;
+namespace Art\BloatTrimmer\Helpers;
 
 /**
  * Class Utils
@@ -117,59 +117,5 @@ class Utils {
 			: $cases[ min( $int_num % 10, 5 ) ];
 
 		return $titles[ $title_index ];
-	}
-
-
-	public static function is_woocommerce_active(): bool {
-
-		if ( class_exists( 'WC' ) ) {
-			return true;
-		}
-
-		if ( ! function_exists( 'is_plugin_active' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		}
-
-		if ( is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
-			return true;
-		}
-
-		return false;
-	}
-
-
-	public static function is_rank_math_active(): bool {
-
-		if ( class_exists( 'RankMath' ) ) {
-			return true;
-		}
-
-		if ( ! function_exists( 'is_plugin_active' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		}
-
-		if ( is_plugin_active( 'seo-by-rank-math/rank-math.php' ) ) {
-			return true;
-		}
-
-		return false;
-	}
-
-
-	public static function is_yoast_active(): bool {
-
-		if ( class_exists( 'Yoast\WP\SEO\Main' ) ) {
-			return true;
-		}
-
-		if ( ! function_exists( 'is_plugin_active' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		}
-
-		if ( is_plugin_active( 'wordpress-seo/wp-seo.php' ) ) {
-			return true;
-		}
-
-		return false;
 	}
 }

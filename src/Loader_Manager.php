@@ -19,7 +19,9 @@ use Art\BloatTrimmer\Cleanup_Core\Disable_Emoji;
 use Art\BloatTrimmer\Cleanup_Core\Disable_Feed;
 use Art\BloatTrimmer\Cleanup_Core\Disable_Xml_Rpc;
 use Art\BloatTrimmer\Admin\Sections\Plugins;
+use Art\BloatTrimmer\Helpers\Condition;
 use Automattic\WooCommerce\Internal\Utilities\Users;
+use Art\BloatTrimmer\Helpers\Utils;
 
 class Loader_Manager {
 
@@ -29,10 +31,14 @@ class Loader_Manager {
 	protected Utils $utils;
 
 
-	public function __construct( Options $options, Utils $utils ) {
+	protected Condition $condition;
 
-		$this->options = $options;
-		$this->utils   = $utils;
+
+	public function __construct( Options $options, Utils $utils, $condition ) {
+
+		$this->options   = $options;
+		$this->utils     = $utils;
+		$this->condition = $condition;
 	}
 
 
@@ -55,7 +61,7 @@ class Loader_Manager {
 		];
 
 		foreach ( $core_modules as $module_class ) {
-			( new $module_class( $this->options, $this->utils ) )->init_hooks();
+			( new $module_class( $this->options, $this->utils, $this->condition ) )->init_hooks();
 		}
 	}
 
@@ -151,49 +157,49 @@ class Loader_Manager {
 				'class'     => Cleanup_Plugins\Woocommerce\Integrations::class,
 				'condition' => function () {
 
-					return $this->utils->is_woocommerce_active();
+					return $this->condition->is_woocommerce_active();
 				},
 			],
 			'scheduler_woocommerce'      => [
 				'class'     => Cleanup_Plugins\Woocommerce\Scheduler::class,
 				'condition' => function () {
 
-					return $this->utils->is_woocommerce_active() && Users::is_site_administrator();
+					return $this->condition->is_woocommerce_active() && Users::is_site_administrator();
 				},
 			],
 			'tools_woocommerce'          => [
 				'class'     => Cleanup_Plugins\Woocommerce\Tools::class,
 				'condition' => function () {
 
-					return $this->utils->is_woocommerce_active() && Users::is_site_administrator();
+					return $this->condition->is_woocommerce_active() && Users::is_site_administrator();
 				},
 			],
 			'disabled_woocommerce'       => [
 				'class'     => Cleanup_Plugins\Woocommerce\Disabled::class,
 				'condition' => function () {
 
-					return is_admin() && $this->utils->is_woocommerce_active();
+					return is_admin() && $this->condition->is_woocommerce_active();
 				},
 			],
 			'dequeue_woocommerce'        => [
 				'class'     => Cleanup_Plugins\Woocommerce\Dequeue::class,
 				'condition' => function () {
 
-					return $this->utils->is_woocommerce_active() && 'on' === $this->options->get( 'woocommerce_dequeue', 'plugins' );
+					return $this->condition->is_woocommerce_active() && 'on' === $this->options->get( 'woocommerce_dequeue', 'plugins' );
 				},
 			],
 			'disabled_rank_math'         => [
 				'class'     => Cleanup_Plugins\RankMath\Disabled::class,
 				'condition' => function () {
 
-					return $this->utils->is_rank_math_active();
+					return $this->condition->is_rank_math_active();
 				},
 			],
 			'disabled_yoast'             => [
 				'class'     => Cleanup_Plugins\Yoast\Disabled::class,
 				'condition' => function () {
 
-					return $this->utils->is_yoast_active();
+					return $this->condition->is_yoast_active();
 				},
 			],
 

@@ -2,7 +2,8 @@
 
 namespace Art\BloatTrimmer\Admin;
 
-use Art\BloatTrimmer\Utils;
+use Art\BloatTrimmer\Helpers\Condition;
+use Art\BloatTrimmer\Helpers\Utils;
 
 class Settings {
 
@@ -21,10 +22,14 @@ class Settings {
 	protected array $support_plugins;
 
 
-	public function __construct( $wposa, $utils ) {
+	protected Condition $condition;
 
-		$this->wposa = $wposa;
-		$this->utils = $utils;
+
+	public function __construct( $wposa, $utils, $condition ) {
+
+		$this->wposa     = $wposa;
+		$this->utils     = $utils;
+		$this->condition = $condition;
 
 		$this->support_plugins = [
 			'woocommerce/woocommerce.php',

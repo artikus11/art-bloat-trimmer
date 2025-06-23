@@ -8,7 +8,7 @@
 
 namespace Art\BloatTrimmer\Cleanup_Plugins\Woocommerce;
 
-use Art\BloatTrimmer\Utils;
+use Art\BloatTrimmer\Helpers\Utils;
 
 class Integrations {
 

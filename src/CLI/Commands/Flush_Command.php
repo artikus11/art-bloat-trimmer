@@ -4,7 +4,7 @@ namespace Art\BloatTrimmer\CLI\Commands;
 
 use Art\BloatTrimmer\Cleanup_Plugins\Woocommerce\Utilities;
 use Art\BloatTrimmer\CLI\Command_Interface;
-use Art\BloatTrimmer\Utils;
+use Art\BloatTrimmer\Helpers\Condition;
 use Exception;
 use WP_CLI;
 use function WP_CLI\Utils\make_progress_bar;
@@ -66,7 +66,7 @@ class Flush_Command implements Command_Interface {
 
 	public static function is_available(): bool {
 
-		return Utils::is_woocommerce_active();
+		return Condition::is_woocommerce_active();
 	}
 
 

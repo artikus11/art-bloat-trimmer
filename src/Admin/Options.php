@@ -11,7 +11,7 @@
 
 namespace Art\BloatTrimmer\Admin;
 
-use Art\BloatTrimmer\Utils;
+use Art\BloatTrimmer\Helpers\Utils;
 
 /**
  * WP_OSA.
