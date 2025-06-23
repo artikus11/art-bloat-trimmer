@@ -1,10 +1,16 @@
 <?php
+/**
+ * Class Scheduler
+ *
+ * @since   2.0.0
+ * @package art-bloat-trimmer/src/Cleanup_Plugins/Woocommerce
+ */
 
 namespace Art\BloatTrimmer\Cleanup_Plugins\Woocommerce;
 
-use Automattic\WooCommerce\Internal\Utilities\Users;
+use Art\BloatTrimmer\Interfaces\Init_Hooks_Interface;
 
-class Scheduler {
+class Scheduler implements Init_Hooks_Interface {
 
 	public function init_hooks(): void {
 

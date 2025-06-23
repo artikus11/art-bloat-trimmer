@@ -9,7 +9,9 @@
 
 namespace Art\BloatTrimmer\Cleanup_Core;
 
-class Disable_Xml_Rpc {
+use Art\BloatTrimmer\Interfaces\Init_Hooks_Interface;
+
+class Disable_Xml_Rpc implements Init_Hooks_Interface {
 
 	public function init_hooks(): void {
 

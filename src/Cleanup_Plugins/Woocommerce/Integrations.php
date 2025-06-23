@@ -9,8 +9,9 @@
 namespace Art\BloatTrimmer\Cleanup_Plugins\Woocommerce;
 
 use Art\BloatTrimmer\Helpers\Utils;
+use Art\BloatTrimmer\Interfaces\Init_Hooks_Interface;
 
-class Integrations {
+class Integrations implements Init_Hooks_Interface {
 
 	protected Utils $utils;
 

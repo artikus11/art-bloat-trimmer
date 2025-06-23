@@ -15,8 +15,9 @@
 namespace Art\BloatTrimmer\Cleanup_Plugins\RankMath;
 
 use Art\BloatTrimmer\Admin\Options;
+use Art\BloatTrimmer\Interfaces\Init_Hooks_Interface;
 
-class Disabled {
+class Disabled implements Init_Hooks_Interface {
 
 	public function init_hooks(): void {
 

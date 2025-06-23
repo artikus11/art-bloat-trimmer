@@ -1,8 +1,16 @@
 <?php
+/**
+ * Class Tools
+ *
+ * @since   2.0.0
+ * @package art-bloat-trimmer/src/Cleanup_Plugins/Woocommerce
+ */
 
 namespace Art\BloatTrimmer\Cleanup_Plugins\Woocommerce;
 
-class Tools {
+use Art\BloatTrimmer\Interfaces\Init_Hooks_Interface;
+
+class Tools implements Init_Hooks_Interface {
 
 	public function init_hooks(): void {
 

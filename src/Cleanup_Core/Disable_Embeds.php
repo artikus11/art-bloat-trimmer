@@ -10,9 +10,10 @@
 namespace Art\BloatTrimmer\Cleanup_Core;
 
 use Art\BloatTrimmer\Helpers\Utils;
+use Art\BloatTrimmer\Interfaces\Init_Hooks_Interface;
 use WP_Scripts;
 
-class Disable_Embeds {
+class Disable_Embeds implements Init_Hooks_Interface {
 
 	public function init_hooks(): void {
 

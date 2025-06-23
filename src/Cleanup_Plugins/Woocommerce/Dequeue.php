@@ -8,9 +8,10 @@
 
 namespace Art\BloatTrimmer\Cleanup_Plugins\Woocommerce;
 
+use Art\BloatTrimmer\Interfaces\Init_Hooks_Interface;
 use WP_Post;
 
-class Dequeue {
+class Dequeue implements Init_Hooks_Interface {
 
 	private ?WP_Post $current_post;
 

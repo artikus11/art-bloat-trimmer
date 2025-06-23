@@ -9,9 +9,10 @@
 
 namespace Art\BloatTrimmer\Cleanup_Core;
 
+use Art\BloatTrimmer\Interfaces\Init_Hooks_Interface;
 use WP_Error;
 
-class Disable_Comments {
+class Disable_Comments implements Init_Hooks_Interface {
 
 	public function init_hooks(): void {
 

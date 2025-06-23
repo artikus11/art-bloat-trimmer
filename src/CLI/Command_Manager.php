@@ -4,6 +4,7 @@ namespace Art\BloatTrimmer\CLI;
 
 use Art\BloatTrimmer\CLI\Commands\Root_Command;
 
+use Art\BloatTrimmer\Interfaces\Command_Interface;
 use Exception;
 use WP_CLI;
 

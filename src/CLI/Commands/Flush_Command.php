@@ -3,8 +3,8 @@
 namespace Art\BloatTrimmer\CLI\Commands;
 
 use Art\BloatTrimmer\Cleanup_Plugins\Woocommerce\Utilities;
-use Art\BloatTrimmer\CLI\Command_Interface;
 use Art\BloatTrimmer\Helpers\Condition;
+use Art\BloatTrimmer\Interfaces\Command_Interface;
 use Exception;
 use WP_CLI;
 use function WP_CLI\Utils\make_progress_bar;

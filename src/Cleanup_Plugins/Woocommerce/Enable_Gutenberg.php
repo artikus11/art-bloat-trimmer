@@ -2,7 +2,9 @@
 
 namespace Art\BloatTrimmer\Cleanup_Plugins\Woocommerce;
 
-class Enable_Gutenberg {
+use Art\BloatTrimmer\Interfaces\Init_Hooks_Interface;
+
+class Enable_Gutenberg implements Init_Hooks_Interface {
 
 	public function init_hooks(): void {
 

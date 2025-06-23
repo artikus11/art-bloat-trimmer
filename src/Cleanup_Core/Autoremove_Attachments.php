@@ -2,7 +2,9 @@
 
 namespace Art\BloatTrimmer\Cleanup_Core;
 
-class Autoremove_Attachments {
+use Art\BloatTrimmer\Interfaces\Init_Hooks_Interface;
+
+class Autoremove_Attachments implements Init_Hooks_Interface {
 
 	public function init_hooks(): void {
 

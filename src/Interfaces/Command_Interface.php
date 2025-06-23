@@ -1,6 +1,6 @@
 <?php
 
-namespace Art\BloatTrimmer\CLI;
+namespace Art\BloatTrimmer\Interfaces;
 
 interface Command_Interface {
 

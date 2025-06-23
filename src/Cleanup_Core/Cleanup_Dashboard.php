@@ -8,7 +8,9 @@
 
 namespace Art\BloatTrimmer\Cleanup_Core;
 
-class Cleanup_Dashboard {
+use Art\BloatTrimmer\Interfaces\Init_Hooks_Interface;
+
+class Cleanup_Dashboard implements Init_Hooks_Interface {
 
 	public function init_hooks(): void {
 
