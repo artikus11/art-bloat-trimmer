@@ -19,20 +19,25 @@
  * Copyright Artem Abramovich
  */
 
+use Art\BloatTrimmer\Main;
+use Art\BloatTrimmer\Uninstall;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const ABT_PLUGIN_DIR   = __DIR__;
-const ABT_PLUGIN_AFILE = __FILE__;
-const ABT_PLUGIN_VER   = '2.1.1';
-const ABT_PLUGIN_NAME  = 'Bloat Trimmer';
-const ABT_PLUGIN_SLUG  = 'art-bloat-trimmer';
-const ABT_PLUGIN_PREFIX  = 'abt';
+const ABT_PLUGIN_DIR    = __DIR__;
+const ABT_PLUGIN_AFILE  = __FILE__;
+const ABT_PLUGIN_VER    = '2.1.1';
+const ABT_PLUGIN_NAME   = 'Bloat Trimmer';
+const ABT_PLUGIN_SLUG   = 'art-bloat-trimmer';
+const ABT_PLUGIN_PREFIX = 'abt';
 
 define( 'ABT_PLUGIN_URI', untrailingslashit( plugin_dir_url( ABT_PLUGIN_AFILE ) ) );
 define( 'ABT_PLUGIN_FILE', plugin_basename( __FILE__ ) );
 
 require ABT_PLUGIN_DIR . '/vendor/autoload.php';
 
-( new Art\BloatTrimmer\Main() )->init();
+register_uninstall_hook( __FILE__, [ Uninstall::class, 'init' ] );
+
+( new Main() )->init();
