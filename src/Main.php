@@ -37,6 +37,8 @@ class Main {
 	public function init(): void {
 
 		add_action( 'plugins_loaded', [ $this, 'initialize' ], - PHP_INT_MAX );
+
+		add_filter( 'plugin_action_links_' . $this->utils->get_plugin_basename(), [ $this, 'add_plugin_action_links' ], 10, 1 );
 	}
 
 
@@ -46,6 +48,20 @@ class Main {
 		$this->cli_manager->initialize();
 
 		$this->initialize_updater();
+	}
+
+
+	public function add_plugin_action_links( array $links ): array {
+
+		$plugin_links = [
+			'settings' => sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( admin_url( 'options-general.php?page=art-bloat-trimmer' ) ),
+				'Настройки'
+			),
+		];
+
+		return array_merge( $plugin_links, $links );
 	}
 
 
