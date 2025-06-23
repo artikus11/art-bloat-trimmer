@@ -7,6 +7,8 @@ use Art\BloatTrimmer\Admin\Settings;
 class Plugins extends Settings {
 
 	protected string $section_id = 'plugins';
+
+
 	protected string $field_prefix;
 
 
@@ -46,7 +48,7 @@ class Plugins extends Settings {
 				'id'   => 'plugins_message',
 				'type' => 'title',
 				'name' => 'Нет активных плагинов',
-				'desc' => 'На текущий момент плагин поддержваются плагины: WooCommerce, SEO Rank Math. Настройки появяться автоматически приактивации поддерживаемых плагинов.',
+				'desc' => 'На текущий момент плагин поддержваются плагины: WooCommerce, SEO Rank Math, Yoast SEO. Настройки появяться автоматически при активации поддерживаемых плагинов.',
 			]
 		);
 	}

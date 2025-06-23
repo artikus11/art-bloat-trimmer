@@ -64,141 +64,6 @@ class Disabled {
 	}
 
 
-	public function feature_config_disabled_selected(): array {
-
-		return [
-			// Панель акивности. default:true
-			'activity-panels'                         => $this->has_activity_panels(),
-
-			// Аналитика. default:true
-			'analytics'                               => $this->has_analytics(),
-
-			// Отклбчает редактор товаров совсем, даже если включена опция Попробуйте новый редактор товаров (product). Если false то новый редактор будет пытаться загрудить но не загрузиться. default:true
-			'product-block-editor'                    => $this->has_product_block_editor(),
-
-			// Вместо стандартного списка товаров WordPress (wp-admin/edit.php?post_type=product) используется современный интерфейс с возможностью фильтрации, поиска и сортировки. Не работает, видимо на будущее заложено (product). default:false
-			'product-data-views'                      => $this->has_product_block_editor(),
-
-			// Включает экспериметальные блоки wp-content/plugins/woocommerce/src/Blocks/BlockTypesController.php:503. default:false
-			'experimental-blocks'                     => $this->has_fse(),
-
-			// Отвечает за шаблон страницы "Скоро открытие" с формой подписки на рассылку (Coming Soon Newsletter Template). Непонятный функционал, похоже заложено на будущее. default:false
-			'coming-soon-newsletter-template'         => $this->has_fse(),
-
-			// Перенос купонов, не работает если отключен Маркетинг. default:true
-			'coupons'                                 => $this->has_marketing(),
-
-			// Инструмент улучшения процесса первоначальной настройки магазина (onboarding). default:true
-			'core-profiler'                           => $this->has_onboarding(),
-
-			// Эта функция предоставляет инструменты для быстрой настройки внешнего вида и функциональности вашего магазина, особенно в процессе первоначальной настройки (onboarding). Похоже что работает только с темами FSE. default:true
-			'customize-store'                         => $this->has_onboarding(),
-
-			// Это инструмент, который помогает WooCommerce собирать отзывы от пользователей, пользователям будут показываться запросы на оценку усилий после выполнения определённых задач (onboarding). default:true
-			'customer-effort-score-tracks'            => $this->has_onboarding(),
-
-			// Импорт товаров при первоначальной настройке магазина (onboarding). default:true
-			'import-products-task'                    => $this->has_onboarding(),
-
-			// Будет доступна возможность создания и управления образцами товаров. Хз как это работает, видимо на будущее заложено. default:true
-			'experimental-fashion-sample-products'    => $this->has_onboarding(),
-
-			// Это экспериментальная функция, которая помогает автоматически настраивать параметры доставки для новых магазинов (onboarding). default:true
-			'shipping-smart-defaults'                 => $this->has_onboarding(),
-
-			// Интерактивный гид, который помогает новым пользователям разобраться в настройках доставки в WooCommerce (onboarding). default:true
-			'shipping-setting-tour'                   => $this->has_onboarding(),
-
-			// Главная страница WooCommerce Admin. Раздел обзор. default:true
-			'homescreen'                              => $this->has_homescreen(),
-
-			// Раздел маркетинга. default:true
-			'marketing'                               => $this->has_marketing(),
-
-			// Минификация скриптов. Хз как это работает. default:false
-			'minified-js'                             => true,
-
-			// Связана с баннером мобильного приложения, который отображается в административной панели WooCommerce. default:true
-			'mobile-app-banner'                       => $this->has_onboarding(),
-
-			// Первоначальная настройка магазина (Onboarding). default:true
-			'onboarding'                              => $this->has_onboarding(),
-
-			// Первоначальная настройка магазина (Onboarding). default:true
-			'onboarding-tasks'                        => $this->has_onboarding(),
-
-			// Экспериментальная функциия, которая предоставляет полную композируемость паттернов (product). default:true
-			'pattern-toolkit-full-composability'      => $this->has_product_block_editor(),
-
-			// Модальное окно, которое появляется перед публикацией товара. Работет если включено создание товаров через гутенберг (product). default:false
-			'product-pre-publish-modal'               => $this->has_product_block_editor(),
-
-			// Поддержка произвольных полей при создании товара в Гутенберг. Хотя не понял как там это работает (product). default:true
-			'product-custom-fields'                   => $this->has_product_block_editor(),
-
-			// Уведомления, которые WooCommerce получает с серверов WooCommerce.com. default:true
-			'remote-inbox-notifications'              => $this->has_marketing(),
-
-			// Рекламная хрень. WooCommerce получает список рекомендуемых бесплатных расширений с серверов WooCommerce.com и отображает их в административной панели. default:true
-			'remote-free-extensions'                  => $this->has_marketing(),
-
-			// Рекомендации по платёжным шлюзам (payments). default:true
-			'payment-gateway-suggestions'             => $this->has_payments(),
-
-			// Интеграция с платформой Printful. Непонятно то ли это метод доставки, то ли какой то серви печать на товарах. default:true
-			'printful'                                => false,
-
-			// Непонятно что это, при включении фаталы вываливаются. default:false
-			'settings'                                => false,
-
-			// Вроде как баннер об интеграциях с доставками. Скорее всего предназначено для плагина WooCommerce Shipping. default:true
-			'shipping-label-banner'                   => false,
-
-			// Управляет доступностью функционала подписок. Скорее всего предназначено для плагина WooCommerce Subscriptions. default:true
-			'subscriptions'                           => false,
-
-			// Вроде как  управляет доступностью уведомлений о состоянии магазина, но где конкретно это все видно непонятно. default:true
-			'store-alerts'                            => false,
-
-			// Временные уведомления. Скорее всего снеки, типа Настройки сохранены. default:true
-			'transient-notices'                       => false,
-
-			// Приветственный баннер для мобильного приложения WooCommerce (Onboarding). default:true
-			'woo-mobile-welcome'                      => $this->has_onboarding(),
-
-			// Реклама WooCommerce Payments — встроенного платёжного решения от WooCommerce (payments). default:true
-			'wc-pay-promotion'                        => $this->has_payments(),
-
-			// Приветственная страница WooCommerce Payments (payments). default:true
-			'wc-pay-welcome-page'                     => $this->has_payments(),
-
-			// Асинхронная загрузка категорий ри редактировании товара. Работает в любом редакторе. Рестом категории загружаются и выводять по типу как в гутенберге (product). default:false
-			'async-product-editor-category-field'     => true,
-
-			// Фуннкционал Видимость сайта. default:true
-			'launch-your-store'                       => $this->has_launch_your_store(),
-
-			// Судя по всему это включение функционала темплейтов товаров под новый редактор. Толком не работает (product). default:false
-			'product-editor-template-system'          => $this->has_product_block_editor(),
-
-			// Функционал позволяет создавать предварительно настроенные шаблоны магазинов. Хз как это работает, скорее всего предназначено под FSE. default:false
-			'blueprint'                               => $this->has_fse(),
-
-			// Настройки способов оплаты на реакте (payments). default:true
-			'reactify-classic-payments-settings'      => $this->has_payments(),
-
-			// Вроде как инструмента для управления очередями задач (job queues). default:false
-			'use-wp-horizon'                          => $this->has_fse(),
-
-			// Функционал предоставляет пошаговый интерфейс (stepper layout) для выбора опций товара (например, атрибутов, вариаций) перед добавлением в корзину. Для блока корзины. default:false
-			'add-to-cart-with-options-stepper-layout' => $this->has_fse(),
-
-			// Заменяет стандартную кнопку "Добавить в корзину" на блок Gutenberg. Работает скорее всего в FSE. default:false
-			'blockified-add-to-cart'                  => $this->has_fse(),
-		];
-	}
-
-
 	public function only_wc_admin_app(): void {
 
 		$screen    = get_current_screen();
@@ -376,5 +241,236 @@ class Disabled {
 		}
 
 		return true;
+	}
+
+
+	/**
+	 * Returns an array of feature configurations with their current status.
+	 * Each feature is represented by a key-value pair, where the key is the feature identifier,
+	 * and the value indicates whether the feature is enabled or disabled.
+	 *
+	 * Feature descriptions:
+	 *
+	 * - activity-panels
+	 *   Панель активности WooCommerce.
+	 *
+	 * @default true
+	 *
+	 * - product-block-editor
+	 *   Отключает редактор товаров полностью, даже если включена опция "Попробуйте новый редактор товаров".
+	 *   Если false, то новый редактор будет пытаться загрузиться, но не загрузится.
+	 * @default true
+	 *
+	 * - reactify-classic-payments-settings
+	 *   Настройки способов оплаты на React.js.
+	 * @default true
+	 *
+	 * - coming-soon-newsletter-template
+	 *   Отвечает за шаблон страницы "Скоро открытие" с формой подписки на рассылку.
+	 *   Непонятный функционал, похоже заложено на будущее.
+	 * @default false
+	 *
+	 * - coupons
+	 *   Перенос купонов, не работает если отключен Маркетинг.
+	 * @default true
+	 *
+	 * - core-profiler
+	 *   Инструмент улучшения процесса первоначальной настройки магазина (onboarding).
+	 * @default true
+	 *
+	 * - customize-store
+	 *   Эта функция предоставляет инструменты для быстрой настройки внешнего вида и функциональности вашего магазина,
+	 *   особенно в процессе первоначальной настройки (onboarding). Похоже что работает только с темами FSE.
+	 * @default true
+	 *
+	 * - customer-effort-score-tracks
+	 *   Это инструмент, который помогает WooCommerce собирать отзывы от пользователей,
+	 *   пользователям будут показываться запросы на оценку усилий после выполнения определённых задач (onboarding).
+	 * @default true
+	 *
+	 * - import-products-task
+	 *   Импорт товаров при первоначальной настройке магазина (onboarding).
+	 * @default true
+	 *
+	 * - experimental-fashion-sample-products
+	 *   Будет доступна возможность создания и управления образцами товаров.
+	 *   Хз как это работает, видимо на будущее заложено.
+	 * @default true
+	 *
+	 * - shipping-smart-defaults
+	 *   Это экспериментальная функция, которая помогает автоматически настраивать параметры доставки для новых магазинов (onboarding).
+	 * @default true
+	 *
+	 * - shipping-setting-tour
+	 *   Интерактивный гид, который помогает новым пользователям разобраться в настройках доставки в WooCommerce (onboarding).
+	 * @default true
+	 *
+	 * - homescreen
+	 *   Главная страница WooCommerce Admin. Раздел обзор.
+	 * @default true
+	 *
+	 * - marketing
+	 *   Раздел маркетинга.
+	 * @default true
+	 *
+	 * - minified-js
+	 *   Минификация скриптов. Хз как это работает.
+	 * @default false
+	 *
+	 * - mobile-app-banner
+	 *   Связана с баннером мобильного приложения, который отображается в административной панели WooCommerce.
+	 * @default true
+	 *
+	 * - onboarding
+	 *   Первоначальная настройка магазина (Onboarding).
+	 * @default true
+	 *
+	 * - onboarding-tasks
+	 *   Первоначальная настройка магазина (Onboarding).
+	 * @default true
+	 *
+	 * - pattern-toolkit-full-composability
+	 *   Экспериментальная функция, которая предоставляет полную композируемость паттернов (product).
+	 * @default true
+	 *
+	 * - product-pre-publish-modal
+	 *   Модальное окно, которое появляется перед публикацией товара.
+	 *   Работает если включено создание товаров через гутенберг (product).
+	 * @default false
+	 *
+	 * - product-custom-fields
+	 *   Поддержка произвольных полей при создании товара в Гутенберг.
+	 *   Хотя не понял как там это работает (product).
+	 * @default true
+	 *
+	 * - remote-inbox-notifications
+	 *   Уведомления, которые WooCommerce получает с серверов WooCommerce.com.
+	 * @default true
+	 *
+	 * - remote-free-extensions
+	 *   Рекламная хрень. WooCommerce получает список рекомендуемых бесплатных расширений с серверов WooCommerce.com
+	 *   и отображает их в административной панели.
+	 * @default true
+	 *
+	 * - payment-gateway-suggestions
+	 *   Рекомендации по платёжным шлюзам (payments).
+	 * @default true
+	 *
+	 * - printful
+	 *   Интеграция с платформой Printful. Непонятно то ли это метод доставки, то ли какой-то сервис печати на товарах.
+	 * @default true
+	 *
+	 * - settings
+	 *   Непонятно что это, при включении фаталы вываливаются.
+	 * @default false
+	 *
+	 * - shipping-label-banner
+	 *   Вроде как баннер об интеграциях с доставками. Скорее всего предназначено для плагина WooCommerce Shipping.
+	 * @default true
+	 *
+	 * - subscriptions
+	 *   Управляет доступностью функционала подписок. Скорее всего предназначено для плагина WooCommerce Subscriptions.
+	 * @default true
+	 *
+	 * - store-alerts
+	 *   Вроде как управляет доступностью уведомлений о состоянии магазина, но где конкретно это все видно непонятно.
+	 * @default true
+	 *
+	 * - transient-notices
+	 *   Временные уведомления. Скорее всего снеки, типа "Настройки сохранены".
+	 * @default true
+	 *
+	 * - woo-mobile-welcome
+	 *   Приветственный баннер для мобильного приложения WooCommerce (Onboarding).
+	 * @default true
+	 *
+	 * - wc-pay-promotion
+	 *   Реклама WooCommerce Payments — встроенного платёжного решения от WooCommerce (payments).
+	 * @default true
+	 *
+	 * - wc-pay-welcome-page
+	 *   Приветственная страница WooCommerce Payments (payments).
+	 * @default true
+	 *
+	 * - async-product-editor-category-field
+	 *   Асинхронная загрузка категорий при редактировании товара.
+	 *   Работает в любом редакторе. Категории загружаются и выводятся по типу как в гутенберге (product).
+	 * @default false
+	 *
+	 * - launch-your-store
+	 *   Функционал "Видимость сайта".
+	 * @default true
+	 *
+	 * - product-editor-template-system
+	 *   Судя по всему это включение функционала темплейтов товаров под новый редактор.
+	 *   Толком не работает (product).
+	 * @default false
+	 *
+	 * - blueprint
+	 *   Функционал позволяет создавать предварительно настроенные шаблоны магазинов.
+	 *   Хз как это работает, скорее всего предназначено под FSE.
+	 * @default false
+	 *
+	 * - use-wp-horizon
+	 *   Вроде как инструмента для управления очередями задач (job queues).
+	 * @default false
+	 *
+	 * - add-to-cart-with-options-stepper-layout
+	 *   Функционал предоставляет пошаговый интерфейс (stepper layout) для выбора опций товара
+	 *   (например, атрибутов, вариаций) перед добавлением в корзину. Для блока корзины.
+	 * @default false
+	 *
+	 * - blockified-add-to-cart
+	 *   Заменяет стандартную кнопку "Добавить в корзину" на блок Gutenberg.
+	 *   Работает скорее всего в FSE.
+	 * @default false
+	 */
+	public function feature_config_disabled_selected(): array {
+
+		return [
+			'activity-panels'                         => $this->has_activity_panels(),
+			'analytics'                               => $this->has_analytics(),
+			'product-block-editor'                    => $this->has_product_block_editor(),
+			'product-data-views'                      => $this->has_product_block_editor(),
+			'experimental-blocks'                     => $this->has_fse(),
+			'coming-soon-newsletter-template'         => $this->has_fse(),
+			'coupons'                                 => $this->has_marketing(),
+			'core-profiler'                           => $this->has_onboarding(),
+			'customize-store'                         => $this->has_onboarding(),
+			'customer-effort-score-tracks'            => $this->has_onboarding(),
+			'import-products-task'                    => $this->has_onboarding(),
+			'experimental-fashion-sample-products'    => $this->has_onboarding(),
+			'shipping-smart-defaults'                 => $this->has_onboarding(),
+			'shipping-setting-tour'                   => $this->has_onboarding(),
+			'homescreen'                              => $this->has_homescreen(),
+			'marketing'                               => $this->has_marketing(),
+			'minified-js'                             => true,
+			'mobile-app-banner'                       => $this->has_onboarding(),
+			'onboarding'                              => $this->has_onboarding(),
+			'onboarding-tasks'                        => $this->has_onboarding(),
+			'pattern-toolkit-full-composability'      => $this->has_product_block_editor(),
+			'product-pre-publish-modal'               => $this->has_product_block_editor(),
+			'product-custom-fields'                   => $this->has_product_block_editor(),
+			'remote-inbox-notifications'              => $this->has_marketing(),
+			'remote-free-extensions'                  => $this->has_marketing(),
+			'payment-gateway-suggestions'             => $this->has_payments(),
+			'printful'                                => false,
+			'settings'                                => false,
+			'shipping-label-banner'                   => false,
+			'subscriptions'                           => false,
+			'store-alerts'                            => false,
+			'transient-notices'                       => false,
+			'woo-mobile-welcome'                      => $this->has_onboarding(),
+			'wc-pay-promotion'                        => $this->has_payments(),
+			'wc-pay-welcome-page'                     => $this->has_payments(),
+			'async-product-editor-category-field'     => true,
+			'launch-your-store'                       => $this->has_launch_your_store(),
+			'product-editor-template-system'          => $this->has_product_block_editor(),
+			'blueprint'                               => $this->has_fse(),
+			'reactify-classic-payments-settings'      => $this->has_payments(),
+			'use-wp-horizon'                          => $this->has_fse(),
+			'add-to-cart-with-options-stepper-layout' => $this->has_fse(),
+			'blockified-add-to-cart'                  => $this->has_fse(),
+		];
 	}
 }
