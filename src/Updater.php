@@ -51,7 +51,7 @@ class Updater {
 	/**
 	 * @var array|null
 	 */
-	private array $github_response = [];
+	private ?array $github_response = [];
 
 
 	public function __construct( $file ) {
@@ -128,7 +128,7 @@ class Updater {
 		if ( is_array( $response ) && ! empty( $response['assets'] ) ) {
 			$assets = current( $response['assets'] );
 
-			$changelog = wp_remote_get(
+			$changelog_response = wp_remote_get(
 				sprintf(
 					'https://raw.githubusercontent.com/%s/%s/master/CHANGELOG.md',
 					$this->username,
@@ -136,10 +136,16 @@ class Updater {
 				)
 			);
 
+			$changelog_body = '';
+
+			if ( wp_remote_retrieve_response_code( $changelog_response ) === 200 ) {
+				$changelog_body = wp_remote_retrieve_body( $changelog_response );
+			}
+
 			$this->github_response = [
 				'tag_name'      => $response['tag_name'],
 				'downloaded'    => $assets['download_count'],
-				'updates'       => '<pre style="border:none;width: 100%;word-break: break-all;white-space: pre;">' . $changelog . '</pre>',
+				'updates'       => '<pre style="border:none;width: 100%;word-break: break-all;white-space: pre;">' . $changelog_body . '</pre>',
 				'last_updated'  => $response['published_at'],
 				'download_link' => $assets['browser_download_url'],
 			];
