@@ -6,6 +6,9 @@ use Art\BloatTrimmer\Admin\Sections\Plugins;
 
 class Woocommerce extends Plugins {
 
+	protected string $field_prefix = 'woocommerce_';
+
+
 	protected function fields(): void {
 
 		if ( ! $this->condition->is_woocommerce_active() ) {
@@ -15,7 +18,7 @@ class Woocommerce extends Plugins {
 		$this->wposa->add_field(
 			$this->section_id,
 			[
-				'id'   => 'woocommerce_heading',
+				'id'   => $this->field_prefix . 'heading',
 				'type' => 'title',
 				'name' => 'WooCommerce',
 			]
@@ -24,7 +27,7 @@ class Woocommerce extends Plugins {
 		$this->wposa->add_field(
 			$this->section_id,
 			[
-				'id'                => 'woocommerce_disable_feature',
+				'id'                => $this->field_prefix . 'disable_feature',
 				'type'              => 'switch',
 				'name'              => 'Отключить WooCommerce Admin',
 				'default'           => 'off',
@@ -38,7 +41,7 @@ class Woocommerce extends Plugins {
 		$this->wposa->add_field(
 			$this->section_id,
 			[
-				'id'      => 'woocommerce_dequeue',
+				'id'      => $this->field_prefix . 'dequeue',
 				'type'    => 'switch',
 				'name'    => 'Переключение стилей и скриптов',
 				'default' => 'off',
@@ -49,7 +52,21 @@ class Woocommerce extends Plugins {
 		$this->wposa->add_field(
 			$this->section_id,
 			[
-				'id'                => 'woocommerce_disable_analytics',
+				'id'                => $this->field_prefix . 'enable_gutenberg',
+				'type'              => 'switch',
+				'name'              => 'Включить Gutenberg на редактировании товаров',
+				'default'           => 'off',
+				'desc'              => 'При редатировании товаров включается редактор Gutenberg',
+				'custom_attributes' => [
+					'data-disable-feature-all' => 'enable',
+				],
+			]
+		);
+
+		$this->wposa->add_field(
+			$this->section_id,
+			[
+				'id'                => $this->field_prefix . 'disable_analytics',
 				'type'              => 'switch',
 				'name'              => 'Отключить Аналитику',
 				'default'           => 'off',
@@ -63,7 +80,7 @@ class Woocommerce extends Plugins {
 		$this->wposa->add_field(
 			$this->section_id,
 			[
-				'id'                => 'woocommerce_disable_activity_panels',
+				'id'                => $this->field_prefix . 'disable_activity_panels',
 				'type'              => 'switch',
 				'name'              => 'Отключить панель активности',
 				'default'           => 'off',
@@ -77,7 +94,7 @@ class Woocommerce extends Plugins {
 		$this->wposa->add_field(
 			$this->section_id,
 			[
-				'id'                => 'woocommerce_disable_marketing',
+				'id'                => $this->field_prefix . 'disable_marketing',
 				'type'              => 'switch',
 				'name'              => 'Отключить Маркетинг',
 				'default'           => 'off',
@@ -91,7 +108,7 @@ class Woocommerce extends Plugins {
 		$this->wposa->add_field(
 			$this->section_id,
 			[
-				'id'                => 'woocommerce_disable_launch_your_store',
+				'id'                => $this->field_prefix . 'disable_launch_your_store',
 				'type'              => 'switch',
 				'name'              => 'Отключить Видимость сайта',
 				'default'           => 'off',
@@ -105,7 +122,7 @@ class Woocommerce extends Plugins {
 		$this->wposa->add_field(
 			$this->section_id,
 			[
-				'id'                => 'woocommerce_disable_product_editor',
+				'id'                => $this->field_prefix . 'disable_product_editor',
 				'type'              => 'switch',
 				'name'              => 'Отключить редактор товаров',
 				'default'           => 'off',
@@ -119,7 +136,7 @@ class Woocommerce extends Plugins {
 		$this->wposa->add_field(
 			$this->section_id,
 			[
-				'id'                => 'woocommerce_disable_onboarding',
+				'id'                => $this->field_prefix . 'disable_onboarding',
 				'type'              => 'switch',
 				'name'              => 'Отключить первичную настройку',
 				'default'           => 'off',
@@ -133,7 +150,7 @@ class Woocommerce extends Plugins {
 		$this->wposa->add_field(
 			$this->section_id,
 			[
-				'id'                => 'woocommerce_disable_homescreen',
+				'id'                => $this->field_prefix . 'disable_homescreen',
 				'type'              => 'switch',
 				'name'              => 'Отключить раздел Обзор',
 				'default'           => 'off',
@@ -147,7 +164,7 @@ class Woocommerce extends Plugins {
 		$this->wposa->add_field(
 			$this->section_id,
 			[
-				'id'                => 'woocommerce_disable_payments',
+				'id'                => $this->field_prefix . 'disable_payments',
 				'type'              => 'switch',
 				'name'              => 'Отключить улучшения методов оплаты',
 				'default'           => 'off',
@@ -161,7 +178,7 @@ class Woocommerce extends Plugins {
 		$this->wposa->add_field(
 			$this->section_id,
 			[
-				'id'                => 'woocommerce_disable_fse',
+				'id'                => $this->field_prefix . 'disable_fse',
 				'type'              => 'switch',
 				'name'              => 'Отключить FSE',
 				'default'           => 'off',
@@ -175,7 +192,7 @@ class Woocommerce extends Plugins {
 		$this->wposa->add_field(
 			$this->section_id,
 			[
-				'id'                => 'woocommerce_disable_admin_menu',
+				'id'                => $this->field_prefix . 'disable_admin_menu',
 				'type'              => 'switch',
 				'name'              => 'Отключить страницы подменю',
 				'default'           => 'off',

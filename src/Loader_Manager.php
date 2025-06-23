@@ -69,133 +69,140 @@ class Loader_Manager {
 	protected function initialize_conditional_modules(): void {
 
 		$modules = [
-			'disable_aggressive_updates' => [
+			'disable_aggressive_updates'   => [
 				'class'     => Disable_Aggressive_Updates::class,
 				'condition' => function () {
 
 					return is_admin() && 'on' === $this->options->get( 'disable_aggressive_updates', 'general' );
 				},
 			],
-			'disable_emoji'              => [
+			'disable_emoji'                => [
 				'class'     => Disable_Emoji::class,
 				'condition' => function () {
 
 					return 'on' === $this->options->get( 'disable_emoji', 'general' );
 				},
 			],
-			'disable_feed'               => [
+			'disable_feed'                 => [
 				'class'     => Disable_Feed::class,
 				'condition' => function () {
 
 					return 'on' === $this->options->get( 'disable_feed', 'general' );
 				},
 			],
-			'disable_embeds'             => [
+			'disable_embeds'               => [
 				'class'     => Disable_Embeds::class,
 				'condition' => function () {
 
 					return 'on' === $this->options->get( 'disable_embeds', 'general' );
 				},
 			],
-			'disable_xml_rpc'            => [
+			'disable_xml_rpc'              => [
 				'class'     => Disable_Xml_Rpc::class,
 				'condition' => function () {
 
 					return 'on' === $this->options->get( 'disable_xml', 'general' );
 				},
 			],
-			'disable_comments'           => [
+			'disable_comments'             => [
 				'class'     => Disable_Comments::class,
 				'condition' => function () {
 
 					return 'on' === $this->options->get( 'disable_comments', 'general' );
 				},
 			],
-			'autoremove_attachments'     => [
+			'autoremove_attachments'       => [
 				'class'     => Autoremove_Attachments::class,
 				'condition' => function () {
 
 					return is_admin() && 'on' === $this->options->get( 'autoremove_attachments', 'general' );
 				},
 			],
-			'cleanup_head'               => [
+			'cleanup_head'                 => [
 				'class'     => Cleanup_Head::class,
 				'condition' => function () {
 
 					return ! is_admin();
 				},
 			],
-			'cleanup_dashboard'          => [
+			'cleanup_dashboard'            => [
 				'class'     => Cleanup_Dashboard::class,
 				'condition' => function () {
 
 					return is_admin() && 'on' === $this->options->get( 'cleanup_dashboard', 'admin' );
 				},
 			],
-			'cleanup_admin_bar'          => [
+			'cleanup_admin_bar'            => [
 				'class'     => Cleanup_Bar::class,
 				'condition' => function () {
 
 					return 'on' === $this->options->get( 'cleanup_admin_bar', 'admin' );
 				},
 			],
-			'cleanup_widgets'            => [
+			'cleanup_widgets'              => [
 				'class'     => Cleanup_Widgets::class,
 				'condition' => function () {
 
 					return is_admin();
 				},
 			],
-			'cleanup_common'             => [
+			'cleanup_common'               => [
 				'class'     => Cleanup_Common::class,
 				'condition' => function () {
 
 					return is_admin();
 				},
 			],
-			'integrations_woocommerce'   => [
+			'integrations_woocommerce'     => [
 				'class'     => Cleanup_Plugins\Woocommerce\Integrations::class,
 				'condition' => function () {
 
 					return $this->condition->is_woocommerce_active();
 				},
 			],
-			'scheduler_woocommerce'      => [
+			'scheduler_woocommerce'        => [
 				'class'     => Cleanup_Plugins\Woocommerce\Scheduler::class,
 				'condition' => function () {
 
 					return $this->condition->is_woocommerce_active() && Users::is_site_administrator();
 				},
 			],
-			'tools_woocommerce'          => [
+			'tools_woocommerce'            => [
 				'class'     => Cleanup_Plugins\Woocommerce\Tools::class,
 				'condition' => function () {
 
 					return $this->condition->is_woocommerce_active() && Users::is_site_administrator();
 				},
 			],
-			'disabled_woocommerce'       => [
+			'disabled_woocommerce'         => [
 				'class'     => Cleanup_Plugins\Woocommerce\Disabled::class,
 				'condition' => function () {
 
 					return is_admin() && $this->condition->is_woocommerce_active();
 				},
 			],
-			'dequeue_woocommerce'        => [
+			'dequeue_woocommerce'          => [
 				'class'     => Cleanup_Plugins\Woocommerce\Dequeue::class,
 				'condition' => function () {
 
 					return $this->condition->is_woocommerce_active() && 'on' === $this->options->get( 'woocommerce_dequeue', 'plugins' );
 				},
 			],
-			'disabled_rank_math'         => [
+			'enable_gutenberg_woocommerce' => [
+				'class'     => Cleanup_Plugins\Woocommerce\Enable_Gutenberg::class,
+				'condition' => function () {
+
+					return $this->condition->is_woocommerce_active() && 'on' === $this->options->get( 'woocommerce_enable_gutenberg', 'plugins' );
+				},
+			],
+			'disabled_rank_math'           => [
 				'class'     => Cleanup_Plugins\RankMath\Disabled::class,
 				'condition' => function () {
 
 					return $this->condition->is_rank_math_active();
 				},
 			],
-			'disabled_yoast'             => [
+			'disabled_yoast'               => [
 				'class'     => Cleanup_Plugins\Yoast\Disabled::class,
 				'condition' => function () {
 
